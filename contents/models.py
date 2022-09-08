@@ -6,6 +6,10 @@ class Content(models.Model):
     full_name = models.CharField(max_length=50, default=None)
     location = models.CharField(max_length=50, default=None)
     description = models.TextField(max_length=300, default=None)
+    categories = models.ManyToManyField(
+        "categories.Category",
+        related_name = "contents"
+    )
 
     def __str__(self):
         return f"{self.created_at} - {self.location} - {self.description} - {self.full_name}"
