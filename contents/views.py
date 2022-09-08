@@ -5,14 +5,14 @@ from rest_framework.exceptions import NotFound
 
 from .models import Content
 from .serializers.common import ContentSerializer
-from .serializers.populated import PopulatedContentSerializer
+from .serializers.populated import PopulatedContentSerializer, PopulatedContentWithCategoriesSerializer
 # Create your views here.
 class ContentListView(APIView):
 
     def get(self, _request):
         contents = Content.objects.all()
         print("contents__>", contents)
-        serialized_contents = ContentSerializer(contents, many=True)
+        serialized_contents = PopulatedContentWithCategoriesSerializer(contents, many=True)
         print("serialize__>", serialized_contents.data)
         return Response(serialized_contents.data)
 
