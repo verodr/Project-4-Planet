@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'contents',
     'comments',
-    'categories'
+    'categories',
+    'fundings'
 
 ]
 
