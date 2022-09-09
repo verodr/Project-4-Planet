@@ -10,6 +10,7 @@ pylint = "*"
 autopep8 = "*"
 psycopg2 = "*"
 djangorestframework = "*"
+pillow = "*"
 
 [dev-packages]
 

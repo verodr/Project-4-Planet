@@ -6,6 +6,7 @@ class Content(models.Model):
     full_name = models.CharField(max_length=50, default=None)
     location = models.CharField(max_length=50, default=None)
     description = models.TextField(max_length=300, default=None)
+    photo = models.ImageField(null=True, blank=True)
     categories = models.ManyToManyField(
         "categories.Category",
         related_name = "contents"
