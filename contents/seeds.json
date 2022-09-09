@@ -1,0 +1,17 @@
+[
+{
+  "model": "contents.content",
+  "pk": 4,
+  "fields": {
+    "created_at": "2022-09-09",
+    "full_name": "John Smith",
+    "location": "London",
+    "description": "In London I have never seen my beloved meadows so yellow as in this hot summer of 2022.",
+    "photo": "londondry-1242322516.jpeg",
+    "categories": [
+      3,
+      5
+    ]
+  }
+}
+]

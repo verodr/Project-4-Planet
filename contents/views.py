@@ -6,8 +6,10 @@ from rest_framework.exceptions import NotFound
 from .models import Content
 from .serializers.common import ContentSerializer
 from .serializers.populated import PopulatedContentSerializer, PopulatedContentWithCategoriesSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 # Create your views here.
 class ContentListView(APIView):
+    permission_classes = (IsAuthenticatedOrReadOnly, ) 
 
     def get(self, _request):
         contents = Content.objects.all()

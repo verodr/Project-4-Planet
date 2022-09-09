@@ -11,6 +11,8 @@ autopep8 = "*"
 psycopg2 = "*"
 djangorestframework = "*"
 pillow = "*"
+cloudinary = "*"
+pyjwt = "*"
 
 [dev-packages]
 

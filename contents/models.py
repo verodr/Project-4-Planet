@@ -1,5 +1,7 @@
 from django.db import models
 
+
+
 # Create your models here.
 class Content(models.Model):
     created_at = models.DateField(auto_now_add=True)
@@ -11,6 +13,7 @@ class Content(models.Model):
         "categories.Category",
         related_name = "contents"
     )
+
 
     def __str__(self):
         return f"{self.created_at} - {self.location} - {self.description} - {self.full_name}"
