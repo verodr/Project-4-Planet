@@ -11,10 +11,13 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-#import os
+from dotenv import load_dotenv
+import os
 import cloudinary 
 import cloudinary.uploader 
 import cloudinary.api
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a1=2m%%r8b#nwdf_i0%!$_q(%s7f0#)tj)pbu^-$(k83ss+kus'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -136,13 +139,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-#MEDIA_URL = '/media/'
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 cloudinary.config( 
-    cloud_name = "dy8qoqcss", 
-    api_key = "933719424831599", 
-    api_secret = "5nqJ1J_SIYY-YxabRqpISTPq_mw" 
+    cloud_name = os.getenv('CLOUD_NAME'), 
+    api_key = os.getenv('API_KEY'), 
+    api_secret = os.getenv('API_SECRET') 
 )
 
 # Default primary key field type
