@@ -10,3 +10,8 @@ class Funding(models.Model):
         related_name="fundings",
         on_delete = models.CASCADE 
     )
+    owner = models.ForeignKey(
+        'jwt_auth.User',
+        related_name="fundings",
+        on_delete = models.CASCADE
+    )

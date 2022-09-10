@@ -1,12 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, PermissionDenied
 
 # Create your views here.
 from .serializers.common import FundingSerializer
 from .models import Funding
-
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 # Create your views here.
 class FundingListView(APIView):
@@ -22,6 +22,7 @@ class FundingListView(APIView):
             return Response(e.__dict__ if e.__dict__ else str(e), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 class FundingDetailView(APIView):
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def get_funding(self, pk):
         try:
@@ -29,7 +30,9 @@ class FundingDetailView(APIView):
         except Funding.DoesNotExist:
             raise NotFound("Funding not found!")
 
-    def delete(self, _request, pk):
+    def delete(self, request, pk):
         funding_to_delete = self.get_funding(pk)
+        if funding_to_delete.owner != request.user:
+            raise PermissionDenied("Unauthorised")
         funding_to_delete.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

@@ -21,11 +21,11 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('contents/', include('contents.urls')),
-    path('comments/', include('comments.urls')),
-    path('categories/', include('categories.urls')),
-    path('fundings/', include('fundings.urls')),
-    path('auth/', include('jwt_auth.urls'))
+    path('api/contents/', include('contents.urls')),
+    path('api/comments/', include('comments.urls')),
+    path('api/categories/', include('categories.urls')),
+    path('api/fundings/', include('fundings.urls')),
+    path('api/auth/', include('jwt_auth.urls'))
 ]
 
 #urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
