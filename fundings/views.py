@@ -30,6 +30,17 @@ class FundingDetailView(APIView):
         except Funding.DoesNotExist:
             raise NotFound("Funding not found!")
 
+    def put(self, request, pk):
+        funding_to_update = self.get_content(pk=pk)
+        updated_funding = FundingSerializer(funding_to_update, data=request.data)
+        try:
+            updated_funding.is_valid(True)
+            updated_funding.save()
+            return Response(updated_funding.data,status=status.HTTP_202_ACCEPTED)
+        except Exception as e:
+            print(e)
+            return Response(str(e), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
     def delete(self, request, pk):
         funding_to_delete = self.get_funding(pk)
         if funding_to_delete.owner != request.user:

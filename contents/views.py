@@ -13,9 +13,9 @@ class ContentListView(APIView):
 
     def get(self, _request):
         contents = Content.objects.all()
-        print("contents__>", contents)
+        # print("contents__>", contents)
         serialized_contents = PopulatedContentWithCategoriesSerializer(contents, many=True)
-        print("serialize__>", serialized_contents.data)
+        # print("serialize__>", serialized_contents.data)
         return Response(serialized_contents.data)
 
     def post(self, request):
@@ -58,6 +58,17 @@ class ContentDetailView(APIView):
             print(e)
             return Response(str(e), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
+class ContentLatestView(APIView):
 
+    def get_content(self):
+        try:
+            return Content.objects.all().order_by('-created_at')
+        except Content.DoesNotExist:
+            raise NotFound(detail="Content not found!")
 
+    def get(self, _request):
+        contents = self.get_content()
+        latest_content = contents[0]
+        serialized_contents = PopulatedContentSerializer(latest_content)
+        return Response(serialized_contents.data)
         

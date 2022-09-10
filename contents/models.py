@@ -4,7 +4,7 @@ from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Content(models.Model):
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     full_name = models.CharField(max_length=50, default=None)
     location = models.CharField(max_length=50, default=None)
     description = models.TextField(max_length=300, default=None)
