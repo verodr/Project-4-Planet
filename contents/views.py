@@ -2,23 +2,25 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import NotFound
+# from rest_framework.parsers import MultiPartParser
+
 
 from .models import Content
 from .serializers.common import ContentSerializer
 from .serializers.populated import PopulatedContentSerializer, PopulatedContentWithCategoriesSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-# Create your views here.
+
 class ContentListView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly, ) 
 
+
     def get(self, _request):
         contents = Content.objects.all()
-        # print("contents__>", contents)
         serialized_contents = PopulatedContentWithCategoriesSerializer(contents, many=True)
-        # print("serialize__>", serialized_contents.data)
         return Response(serialized_contents.data)
 
     def post(self, request):
+        request.data['image'] = request.FILES['image']
         content_to_add = ContentSerializer(data=request.data)
         try:
             content_to_add.is_valid(True)
