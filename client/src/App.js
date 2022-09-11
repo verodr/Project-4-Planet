@@ -10,6 +10,7 @@ import Footer from './components/Footer'
 import Home from './components/Home'
 import PageNavbar from './components/PageNavbar'
 import Register from './components/Register'
+import Login from './components/Login'
 import SingleContentPage from './components/SingleContentPage'
 import NotFound from './components/NotFound'
 
@@ -32,6 +33,7 @@ const App = () => {
           <Route path = '/contents/upload' element = {<UploadContentPage/>} />
           <Route path = '/contents/:single' element = {<SingleContentPage/>} />
           <Route path = '/register' element = {<Register/>} />
+          <Route path = '/login' element = {<Login/>} />
           <Route path = '*' element = {<NotFound/>} />
         </Routes>
         <Footer />

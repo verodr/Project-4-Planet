@@ -11,7 +11,8 @@ class Content(models.Model):
     image = CloudinaryField('image')
     categories = models.ManyToManyField(
         "categories.Category",
-        related_name = "contents"
+        related_name = "contents",
+        blank=True
     )
 
 

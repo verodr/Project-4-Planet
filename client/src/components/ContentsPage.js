@@ -26,6 +26,12 @@ const ContentsPage = () => {
 
   const selectionCategory = localStorage.getItem('dropDownCategory')
 
+  const transform = (imageUrl) => {
+    const imageTmp = imageUrl.split('/')
+    imageTmp.splice(2, 0, 'w_300,h_200,c_fill/')
+    return imageTmp.join('/')
+  } 
+
   return (
     <Container as="main">
       <h1 className='text-center mb-4'>Contents</h1>
@@ -40,7 +46,7 @@ const ContentsPage = () => {
               <Col key={id} md="6" lg="4" className='mb-4'>
                 <Link to={`/contents/${id}`}>
                   <Card>
-                    <Card.Img variant='top' src={'https://res.cloudinary.com/dy8qoqcss/' + image}></Card.Img>
+                    <Card.Img variant='top' src={'https://res.cloudinary.com/dy8qoqcss/' + transform(image)}></Card.Img>
                     <Card.Body className='bg-light'>
                       <Card.Title className='text-center mb-0'>Created At: {content.created_at} {location}</Card.Title>
                     </Card.Body>

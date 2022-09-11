@@ -30,8 +30,14 @@ class FundingDetailView(APIView):
         except Funding.DoesNotExist:
             raise NotFound("Funding not found!")
 
+    def updateAmount(self, current, amount):
+        return current + amount
+
     def put(self, request, pk):
-        funding_to_update = self.get_content(pk=pk)
+        funding_to_update = self.get_funding(pk=pk)
+        print('first from FUNDING -> ', request.data)
+        print('second from FUNDING -> ', funding_to_update.current_amount)
+        request.data['current_amount'] = self.updateAmount(funding_to_update.current_amount, request.data['current_amount'])
         updated_funding = FundingSerializer(funding_to_update, data=request.data)
         try:
             updated_funding.is_valid(True)

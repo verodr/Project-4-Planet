@@ -33,17 +33,11 @@ const Home = () => {
   }
 
 
-  //   <Dropdown>
-  //     <Dropdown.Toggle variant="success" id="dropdown-basic">
-  //         Dropdown Button
-  //     </Dropdown.Toggle>
-
-  //     <Dropdown.Menu>
-  //       <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-  //       <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-  //       <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-  //     </Dropdown.Menu>
-  //   </Dropdown>
+  const transform = (imageUrl) => {
+    const imageTmp = imageUrl.split('/')
+    imageTmp.splice(2, 0, 'w_300,h_200,c_fill/')
+    return imageTmp.join('/')
+  } 
 
 
   return (
@@ -52,7 +46,7 @@ const Home = () => {
         ?
         <>
           <p> Latest uploaded is </p>
-          <img src={'https://res.cloudinary.com/dy8qoqcss/' + contents.image} />
+          <img src={'https://res.cloudinary.com/dy8qoqcss/' + transform(contents.image)} />
           {/* <Dropdown>
             <Dropdown.Toggle variant='success' id='dropdown-basic'>
                 Collection

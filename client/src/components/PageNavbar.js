@@ -20,6 +20,7 @@ const PageNavbar = () => {
           {/* Nav Link is an individual link inside a nav. Same as Nav Brand, to use Link add as={Link} and to="/pathname" */}
           <Nav.Link as={Link} to="/">Home</Nav.Link>
           <Nav.Link as={Link} to="/Register">Register</Nav.Link>
+          <Nav.Link as={Link} to="/Login">Login</Nav.Link>
         </Navbar.Collapse>
       </Container>
     </Navbar>
