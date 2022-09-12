@@ -12,7 +12,6 @@ class Content(models.Model):
     categories = models.ManyToManyField(
         "categories.Category",
         related_name = "contents",
-        blank=True
     )
 
 

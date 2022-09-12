@@ -7,8 +7,13 @@ from rest_framework.exceptions import NotFound, PermissionDenied
 from .serializers.common import CommentSerializer
 from .models import Comment
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .serializers.populated import PopulatedCommentSerializer
 
 class CommentListView(APIView):
+    def get(self, _request):
+        comments = Comment.objects.all()
+        serialized_comments = PopulatedCommentSerializer(comments, many=True)
+        return Response(serialized_comments.data)
 
     def post(self, request):
         comment_to_create = CommentSerializer(data = request.data)

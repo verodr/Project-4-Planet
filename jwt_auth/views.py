@@ -55,4 +55,4 @@ class LoginView(APIView):
         print("TOKEN ->", token)
 
         # send the token back to the user to save to local storage and apply to secure requests in the Authorization header
-        return Response({ "token": token, "message": f"Welcome back {user_to_login.username}" })
+        return Response({ "token": token, "message": f"Welcome back {user_to_login.username}", 'id':user_to_login.id })

@@ -31,7 +31,7 @@ class FundingDetailView(APIView):
             raise NotFound("Funding not found!")
 
     def updateAmount(self, current, amount):
-        return current + amount
+        return float(current) + float(amount)
 
     def put(self, request, pk):
         funding_to_update = self.get_funding(pk=pk)

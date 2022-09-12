@@ -4,12 +4,53 @@ import { useNavigate } from 'react-router-dom'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownToggle from 'react-bootstrap/esm/DropdownToggle'
 import { Link } from 'react-router-dom'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 const Home = () => {
   const [ contents, setContents ] = useState([])
   const [ categories, setCategories] = useState([])
   const [ errors, setErrors ] = useState(false)
   const navigate = useNavigate()
+  const axios = require('axios')
+
+  const [ newsData, setNewsData ] = useState([])
+  useEffect(() => {
+
+    const getData = async () => {
+      const options = {
+        method: 'GET',
+        url: 'https://climate-change23.p.rapidapi.com/news',
+        headers: {
+          'X-RapidAPI-Key': '9b480a6d88mshc6e98bd8981fde1p132c0djsnd99ddaca6b99',
+          'X-RapidAPI-Host': 'climate-change23.p.rapidapi.com',
+        },
+      }
+      try {
+        const data = await axios.request(options)
+        setNewsData(data.data)
+      }  catch (e) {
+        console.log(e)
+      }
+    }
+    getData()
+  }, [])
+
+  const sourceMapping = (sourceString) => {
+    const dictMap = {
+      'www.thetimes.co.uk': 'The Times',
+      'www.theguardian.com': 'The Guardian',
+      'www.telegraph.co.uk': 'The Telegraph',
+      'www.bbc.co.uk': 'BBC',
+    }
+    const elem = Object.keys(dictMap).filter(x=>{
+      return sourceString.indexOf(x) !== -1
+    })[0]
+    return dictMap[elem]
+  }
+
+
 
   useEffect(() => {
     const getData = async () => {
@@ -39,15 +80,24 @@ const Home = () => {
     return imageTmp.join('/')
   } 
 
-
+  console.log('apinews-->', newsData )
   return (
-    <>
-      {Object.values(contents).length > 0 || Object.values(categories) > 0
-        ?
-        <>
-          <p> Latest uploaded is </p>
-          <img src={'https://res.cloudinary.com/dy8qoqcss/' + transform(contents.image)} />
-          {/* <Dropdown>
+    <> 
+      <Container as="main">
+        <Row>
+          <Col md="6">
+            <div className = 'heading'>
+              <h4>PLANET<br /><span> EARTH IS </span><br />
+                <span>CALLING</span></h4>
+            </div>
+          </Col>
+          <Col md="6">
+            {Object.values(contents).length > 0 || Object.values(categories) > 0
+              ?
+              <>
+                <p> Latest uploaded is </p>
+                <img src={'https://res.cloudinary.com/dy8qoqcss/' + transform(contents.image)} />
+                {/* <Dropdown>
             <Dropdown.Toggle variant='success' id='dropdown-basic'>
                 Collection
             </Dropdown.Toggle>
@@ -58,21 +108,36 @@ const Home = () => {
               })}
             </Dropdown.Menu>
           </Dropdown> */}
-          <select name='collections' id='dropDown' onChange={handleChange}> 
-            {categories.map(cat => {
-              return (
-                <option key={cat.id} value={cat.name}> { cat.name } </option>
-              )
-            })} </select>
-          <Link to="/contents/upload" className='btn dark' id = "randbtn">Upload</Link>
-        </>
-        :
-        <>
-          {errors ? <h2>Something went wrong. Please try again later</h2> : <p>Loading...</p>}
-        </>
-      }
+          
+                <select name='collections' id='dropDown' onChange={handleChange}> 
+                  <option key={0} value={'select'}>COLLECTION</option>
+                  <option key={1} value={'ALL'}> ALL </option>
+                  {categories.map(cat => {
+                    return (
+                      <option key={cat.id} value={cat.name}> { cat.name } </option>
+                    )
+                  })} </select>
+                <Link to="/contents/upload" className='btn dark' id = "randbtn">Upload</Link>
+                <ul>
+                  { newsData.length > 0 ?
+                    newsData.map((source) => {
+                      return <ul key={source.source}> ----- {sourceMapping(source.source)} -----
+                        <a href= {source.news[0].url}> <li>{source.news[0].title} </li></a>
+                      </ul>
+                    }) :
+                    <p> Loading latest news... </p>
+                  }
+                </ul>
+              </>
+              :
+              <>
+                {errors ? <h2>Something went wrong. Please try again later</h2> : <p>Loading...</p>}
+              </>
+            }
+          </Col>
+        </Row>
+      </Container>
     </>
-   
   )
 }
 

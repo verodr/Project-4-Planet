@@ -13,7 +13,6 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 class ContentListView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly, ) 
 
-
     def get(self, _request):
         contents = Content.objects.all()
         serialized_contents = PopulatedContentWithCategoriesSerializer(contents, many=True)

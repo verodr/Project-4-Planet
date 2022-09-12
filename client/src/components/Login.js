@@ -25,10 +25,14 @@ const Login = () => {
   
     try {
       const res = await axios.post('http://127.0.0.1:8000/api/auth/login/', loginData)
-      const { token } = res.data
+      const { token, id, message } = res.data
+      console.log('ID-->', id)
+      console.log('DATA-->', res.data)
       localStorage.setItem('token', token)
-      localStorage.setItem('email', loginData.email)
+      localStorage.setItem('userId', id)
+      localStorage.setItem('message', message)
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      console.log('What Axios gets--', axios.defaults.headers.common['Authorization'] )
       navigate('/')
     } catch (error) {
       console.log(error)

@@ -33,12 +33,12 @@ const ContentsPage = () => {
   } 
 
   return (
-    <Container as="main">
+    <Container as='main' className='contents-index text-center'> 
       <h1 className='text-center mb-4'>Contents</h1>
       <Row>
         { contents.map(content => {
           const { id, image, location, categories } = content
-          const toInclude = categories.filter(x => {
+          const toInclude = selectionCategory === 'ALL' ? categories : categories.filter(x => {
             return x.name.search(selectionCategory) !== -1
           })
           if (toInclude.length > 0) {
