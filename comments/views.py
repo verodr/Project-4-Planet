@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .serializers.populated import PopulatedCommentSerializer
 
 class CommentListView(APIView):
+    permission_classes = (IsAuthenticatedOrReadOnly, )
     def get(self, _request):
         comments = Comment.objects.all()
         serialized_comments = PopulatedCommentSerializer(comments, many=True)

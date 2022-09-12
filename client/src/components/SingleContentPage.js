@@ -13,6 +13,7 @@ const SingleContentPage = () => {
   const [ comments, setComments] = useState([])
   const [ userInput, setUserInput] = useState('')
   const [ errors, setErrors ] = useState(false)
+  const [ refreshPage, setRefreshPage ] = useState(0)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const SingleContentPage = () => {
       }
     }
     getData()
-  }, [])
+  }, [refreshPage])
 
   const handleChange = (e) => {
     setDonation(e.target.value)
@@ -40,45 +41,55 @@ const SingleContentPage = () => {
     setUserInput(e.target.value)
   }
 
-  const makeDonation = async () => {
+  const makeDonation = async (e) => {
+    e.preventDefault()
     const fundingItem = singleContent.fundings[0]
     const body = { ...fundingItem, current_amount: donation }
     console.log('This is the amount', donation)
     
     try {
       const res = await axios.put(`http://127.0.0.1:8000/api/fundings/${fundingItem.id}/`, body)
+      console.log('Donation mande')
+      setRefreshPage(refreshPage + 1)
     } catch (error) {
       console.log('Error message: ', error.response.data.message)
     }
   }
 
-  const deleteContent = async () => {
+  const deleteContent = async (e) => {
+    e.preventDefault()
     const id = singleContent.id 
     try {
       const res = await axios.delete(`http://127.0.0.1:8000/api/contents/${id}/`)
       console.log('Content Deleted')
+      setRefreshPage(refreshPage + 1)
       navigate('/')
     } catch (error) {
       console.log('Error message: ', error.response.data.message)
     }
   }
 
-  const createComment = async () => {
+  const createComment = async (e) => {
+    e.preventDefault()
     const id = singleContent.id 
     const ownerId = localStorage.getItem('userId')
     const body = { content: id , text: userInput, owner: ownerId }
+    const header = { Authorization: `Bearer ${localStorage.getItem('token')}` }
     try {
-      const res = await axios.post('http://localhost:8000/api/comments/', body)
+      const res = await axios.post('http://127.0.0.1:8000/api/comments/', body, header)
       console.log('comment created')
+      setRefreshPage(refreshPage + 1)
+      setUserInput('')
     } catch (error) {
       console.log('Error message: ', error.response.data.message)
     }
   }
 
   const deleteComment = async (commentId) => {
-
     try {
       const res = await axios.delete(`http://127.0.0.1:8000/api/comments/${commentId}/`)
+      console.log('Comment Deleted')
+      setRefreshPage(refreshPage + 1)
     } catch (error) {
       console.log('Error message: ', error.response.data.message)
     }
@@ -96,7 +107,10 @@ const SingleContentPage = () => {
     return imageTmp.join('/')
   } 
 
-  console.log('fromHere_> ', localStorage.getItem('userId'))
+  console.log('USER ID, Single Content Page --> ', localStorage.getItem('userId'))
+  console.log('TOKEN, Single Content Page --> ', localStorage.getItem('token'))
+  // console.log('AXIOS header, Single Content Page --> ', axios.defaults.headers.common)
+
   return (
     <Container as="main">
       <Row>
@@ -139,7 +153,8 @@ const SingleContentPage = () => {
                   return (
                     <div key={id}>
                       <li> {text} --- {comm.created_at} --- {owner.username} </li>
-                      <button className='delete' onClick={()=>{ 
+                      <button className='delete' onClick={(e)=>{
+                        e.preventDefault() 
                         deleteComment(id) 
                       }}> DELETE </button>
                     </div>

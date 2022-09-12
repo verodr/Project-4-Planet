@@ -31,7 +31,7 @@ class ContentListView(APIView):
             return Response(e.__dict__ if e.__dict__ else str(e), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 class ContentDetailView(APIView):
-
+    permission_classes = (IsAuthenticatedOrReadOnly, )
     def get_content(self, pk):
         try:
             return Content.objects.get(pk=pk)

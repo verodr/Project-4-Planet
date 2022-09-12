@@ -14,6 +14,7 @@ class JWTAuthentication(BasicAuthentication):
         # 1. We need to check that the Authorization header exists
         print("HITS AUTHENTICATE MIDDLEWARE")
         header = request.headers.get('Authorization')
+        print('<> Header ', header)
         if not header:
             return None
 

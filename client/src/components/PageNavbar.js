@@ -14,7 +14,7 @@ const PageNavbar = () => {
   
   const handleLogout = () => {
     window.localStorage.removeItem('token')
-    window.localStorage.removeItem('userName')
+    window.localStorage.removeItem('userId')
     window.location.reload(navigate('/login'))
   }
   return (
@@ -22,7 +22,7 @@ const PageNavbar = () => {
       <Container as="section">
         <Navbar.Brand as={Link} to="/">🌻</Navbar.Brand>
         <Navbar.Toggle aria-controls='basic-navbar-nav' />
-        <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end' data-toggle='collapse'>
+        <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end'>
           <Nav.Link as={Link} to="/">Home</Nav.Link>
           { authUser() 
             ?

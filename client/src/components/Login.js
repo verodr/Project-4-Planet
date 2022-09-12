@@ -31,8 +31,8 @@ const Login = () => {
       localStorage.setItem('token', token)
       localStorage.setItem('userId', id)
       localStorage.setItem('message', message)
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-      console.log('What Axios gets--', axios.defaults.headers.common['Authorization'] )
+      axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+      console.log('What Axios gets--', `Bearer ${localStorage.getItem('token')}` )
       navigate('/')
     } catch (error) {
       console.log(error)
