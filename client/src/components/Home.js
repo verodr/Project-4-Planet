@@ -14,6 +14,7 @@ const Home = () => {
   const [ errors, setErrors ] = useState(false)
   const navigate = useNavigate()
   const axios = require('axios')
+  // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
 
   const [ newsData, setNewsData ] = useState([])
   useEffect(() => {
@@ -55,7 +56,7 @@ const Home = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const latest = await axios.get('http://127.0.0.1:8000/api/contents/latest')
+        const latest = await axios.get('http://127.0.0.1:8000/api/contents/latest' )
         const collection = await axios.get('http://127.0.0.1:8000/api/categories')
         setContents(latest.data)
         setCategories(collection.data)

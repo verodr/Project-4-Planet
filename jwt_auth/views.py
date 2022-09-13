@@ -9,18 +9,37 @@ from datetime import datetime, timedelta
 from django.conf import settings 
 from .serializers.common import UserSerializer
 
-# Create your views here.
 class RegisterView(APIView):
     
     def post(self, request):
         user_to_create = UserSerializer(data=request.data)
         try:
-            user_to_create.is_valid(True) 
-            user_to_create.save() 
+            user_to_create.is_valid(True) # this will pass the request through the validate method in the serializer
+            # when is_valid succeeds, it adds the validated_data key to the user_to_create object
+            user_to_create.save() # save() then uses validated_data object to create a new user. Once successful, it will add a data key to user_to_create, which we can then send back to the user
             return Response(user_to_create.data, status=status.HTTP_202_ACCEPTED)
         except Exception as e:
             print(e)
             return Response(e.__dict__ if e.__dict__ else str(e), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    
+    # def post(self, request):
+    #     user_to_create = UserSerializer(data=request.data)
+    #     if  user_to_create.is_valid():
+    #         user = user_to_create.save()
+    #         dt = datetime.now() + timedelta(days=7) 
+
+    #         token = jwt.encode(
+    #             {
+    #                 "sub": user.id,
+    #                 "exp": int(dt.strftime('%s'))
+    #             },
+    #             settings.SECRET_KEY,
+    #             "HS256"
+    #         )
+    #     return Response(user_to_create.data, status=status.HTTP_202_ACCEPTED)
+        
+        # return Response(e.__dict__ if e.__dict__ else str(e), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 class LoginView(APIView):
@@ -29,20 +48,18 @@ class LoginView(APIView):
         email = request.data.get('email')
         password = request.data.get('password')
 
-        # Look for user with email provided
         try:
             user_to_login = User.objects.get(email=email)
         except User.DoesNotExist:
             print("FAILED AT EMAIL STAGE")
             raise PermissionDenied("Invalid credentials")
 
-        # check passwords match
+
         if not user_to_login.check_password(password):
             print("FAILED AT PASSWORD STAGE")
             raise PermissionDenied("Invalid credentials")
 
-        # If the request reaches this point, the user is validated, and we need to send a token
-        dt = datetime.now() + timedelta(days=7) # dt will be a timestamp 7 days from now
+        dt = datetime.now() + timedelta(days=7) 
 
         token = jwt.encode(
             {
@@ -54,5 +71,4 @@ class LoginView(APIView):
         )
         print("TOKEN ->", settings.SECRET_KEY)
 
-        # send the token back to the user to save to local storage and apply to secure requests in the Authorization header
-        return Response({ "token": token, "message": f"Welcome back {user_to_login.username}", 'id':user_to_login.id })
+        return Response({ "token": token, "message": user_to_login.username, 'id':user_to_login.id })

@@ -7,6 +7,7 @@ import { getToken } from '../components/auth'
 import ContentForm from './ContentForm'
 import Container from 'react-bootstrap/Container'
 
+
 const UploadContentPage = () => {
   const navigate = useNavigate()
   const [funding, setFunding] = useState(false)
@@ -24,23 +25,23 @@ const UploadContentPage = () => {
     text: '',
   })
   const [ uploadImage, setUploadImage ] = useState(null)
-  // const [ newContentId, setNewContentId ] = useState(0)
+  axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const collection = await axios.get('http://127.0.0.1:8000/api/categories')
+        const collection = await axios.get('/api/categories')
         setCategories(collection.data)
       } catch (errors) {
         console.log(errors)
-        setErrors(true)
+        setErrors(errors.response.data)
       }
     }
     getData()
   }, [])
   
   const handleContentSubmit = async (event) => {
-    // event.preventDefault()
+
     console.log('FF--> ', fundingDetails)
     try {
       var ct = new FormData()
@@ -48,8 +49,10 @@ const UploadContentPage = () => {
       ct.append('location', contentData.location)
       ct.append('description', contentData.description)
       ct.append('categories', contentData.categories)
+      ct.append('owner', localStorage.getItem('userId'))
       ct.append('image', uploadImage[0])
-      const { data } = await axios.post('http://127.0.0.1:8000/api/contents/', ct, {
+      
+      const { data } = await axios.post('/api/contents/', ct, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -73,54 +76,61 @@ const UploadContentPage = () => {
   }
   
   const handleFundingSubmit = async (id) => {
-    const ownerId = localStorage.getItem('userId')
-    const fundingBody = { ...fundingDetails, current_amout: 0, content: id , owner: ownerId }
+    if (fundingDetails.text !== '') {
+      const ownerId = localStorage.getItem('userId')
+      const fundingBody = { ...fundingDetails, current_amout: 0, content: id , owner: ownerId }
+      try {
+        const { dataF } = await axios.post('/api/fundings/', fundingBody, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        })
+      } catch (err) {
+        console.log(err.response.data)
+        setErrors(err.response.data)
+      }
+    }
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     try {
-      const { dataF } = await axios.post('http://127.0.0.1:8000/api/fundings/', fundingBody, {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      })
+      const id = await handleContentSubmit()
+      console.log('This is the ID--> ', id)
+      if (id !== 0){
+        await handleFundingSubmit(id)
+      }
+      navigate(`/contents/${id}`)
     } catch (err) {
       console.log(err.response.data)
       setErrors(err.response.data)
     }
   }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    const id = await handleContentSubmit()
-    console.log('This is the ID--> ', id)
-    if (id !== 0){
-      await handleFundingSubmit(id)
-    }
-    navigate(`/contents/${id}`)
-  }
-
   const handleChange = (e) => {
-    setContentData({ ...contentData, [e.target.name]: e.target.value.trim() })
-    setErrors(false)
+    setContentData({ ...contentData, [e.target.name]: e.target.value })
+    // setErrors(false)
   }
 
   const handleUploadChange = (e) => {
     setUploadImage(e.target.files)
-    setErrors(false)
+    // setErrors(false)
   }
 
   const handleFundingChange = (e) => {
     setFundingDetail({ ...fundingDetails, [e.target.name]: e.target.value })
-    setErrors(false)
+    // setErrors(false)
   }
   
   return (
     <main className="form-page">
       <Container>
         <form onSubmit={handleSubmit}>
-          <input type="text" name="full_name" placeholder="Name or Nickname" value={contentData.full_name} onChange={handleChange} />
+          <input type="text" name="full_name" placeholder="Name or Nickname *" value={contentData.full_name} onChange={handleChange} />
           { errors.full_name && <p className="text-danger">{errors.full_name}</p> }
-          <input type="text" name="location" placeholder="Location" value={contentData.location} onChange={handleChange} />
+          <input type="text" name="location" placeholder="Location *" value={contentData.location} onChange={handleChange} />
           { errors.location && <p className="text-danger">{errors.location}</p> }
-          <textarea name="description" placeholder="Description" value={contentData.description} onChange={handleChange}></textarea>
+          <textarea name="description" placeholder="Description *" value={contentData.description} onChange={handleChange}></textarea>
           { errors.description && <p className="text-danger">{errors.description}</p> }
           <label htmlFor= "categories">Choose the category of your picture</label>
           <select name="categories" onChange={handleChange}>

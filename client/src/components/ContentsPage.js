@@ -10,11 +10,13 @@ import Card from 'react-bootstrap/Card'
 const ContentsPage = () => {
   const [contents, setContents ] = useState([])
   const [ errors, setErrors ] =  useState(false)
+  // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get('http://127.0.0.1:8000/api/contents/')
+        const { data } = await axios.get('/api/contents/')
         setContents(data)
       } catch (err) {
         console.log(err)

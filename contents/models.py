@@ -13,6 +13,11 @@ class Content(models.Model):
         "categories.Category",
         related_name = "contents",
     )
+    owner = models.ForeignKey(
+        'jwt_auth.User',
+        related_name="contents",
+        on_delete = models.CASCADE
+    )
 
 
     def __str__(self):

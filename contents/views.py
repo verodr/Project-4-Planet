@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, PermissionDenied
 # from rest_framework.parsers import MultiPartParser
 
 
@@ -43,8 +43,10 @@ class ContentDetailView(APIView):
         serialized_content = PopulatedContentSerializer(content)
         return Response(serialized_content.data)
 
-    def delete(self, _request, pk):
+    def delete(self, request, pk):
         content_to_delete = self.get_content(pk=pk)
+        if content_to_delete.owner != request.user:
+            raise PermissionDenied("Unauthorised")
         content_to_delete.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
