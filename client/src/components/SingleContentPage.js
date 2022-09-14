@@ -91,12 +91,14 @@ const SingleContentPage = () => {
         },
       })
       setMessage('Comment created')
-      setUserInput('')
+      // setUserInput('')
       console.log('comment created')
+      return 'Comment created'
       // setMessage('Comment created')
     } catch (error) {
-      console.log('Error message: ', error.response.data.message)
-      setMessage(error.response.data.message)
+      console.log('Error message: ', error.response.data.detail)
+      setMessage(error.response.data.detail)
+      return error.response.data.detail
     }
   }
 

@@ -14,6 +14,7 @@ const UploadContentPage = () => {
   const [funding, setFunding] = useState(false)
   const [categories, setCategories] = useState([])
   const [ errors, setErrors ] = useState('')
+  const [ message, setMessage ] = useState('')
   const [ contentData, setContentData ] = useState({
     full_name: '',
     location: '',
@@ -25,13 +26,15 @@ const UploadContentPage = () => {
     target_amount: 0,
     text: '',
   })
-  const [ uploadImage, setUploadImage ] = useState(null)
+  const [ uploadImage, setUploadImage ] = useState({ length: 0 })
   axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
 
   useEffect(() => {
     const getData = async () => {
       try {
         const collection = await axios.get('/api/categories')
+        const select = { id: 0, name: 'Select', contets: [] }
+        collection.data.splice(0, 0, select)
         setCategories(collection.data)
       } catch (errors) {
         console.log(errors)
@@ -93,6 +96,31 @@ const UploadContentPage = () => {
     }
   }
 
+  const validateForm = (event) => {
+    event.preventDefault()
+    setMessage('')
+    console.log('THIS is the data-- ', categories)
+    console.log(uploadImage.length < 1)
+    if (contentData.full_name === '') {
+      setMessage('Name is required')
+    } else
+    if (contentData.location === '') {
+      setMessage('Location is required')
+    } else 
+    if (contentData.description === '') {
+      setMessage('Description is required')
+    } else
+    if (uploadImage.length < 1) {
+      setMessage('Image is required') 
+    } else 
+    if (contentData.categories === '') {
+      setMessage('Please select a category')
+    } else {
+      handleSubmit(event)
+    }
+  }
+
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
@@ -123,14 +151,15 @@ const UploadContentPage = () => {
     // setErrors(false)
   }
   
+
   return (
     <main className='form-page'>
       <Container>
         <Row>
           <div className='upload-shape'>
-            <form className='style-upload' onSubmit={handleSubmit}>
+            <form className='style-upload' onSubmit={validateForm}>
+              { message ? <p className="text-danger">{message}</p> : <></> }
               <input type="text" name="full_name" placeholder="Name or Nickname *" value={contentData.full_name} onChange={handleChange} />
-              { errors.full_name && <p className="text-danger">{errors.full_name}</p> }
               <input type="text" name="location" placeholder="Location *" value={contentData.location} onChange={handleChange} />
               { errors.location && <p className="text-danger">{errors.location}</p> }
               <textarea name="description" placeholder="Description *" value={contentData.description} onChange={handleChange}></textarea>
