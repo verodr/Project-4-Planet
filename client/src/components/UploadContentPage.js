@@ -6,6 +6,7 @@ import axios from 'axios'
 import { getToken } from '../components/auth'
 import ContentForm from './ContentForm'
 import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/esm/Row'
 
 
 const UploadContentPage = () => {
@@ -123,63 +124,54 @@ const UploadContentPage = () => {
   }
   
   return (
-    <main className="form-page">
+    <main className='form-page'>
       <Container>
-        <form onSubmit={handleSubmit}>
-          <input type="text" name="full_name" placeholder="Name or Nickname *" value={contentData.full_name} onChange={handleChange} />
-          { errors.full_name && <p className="text-danger">{errors.full_name}</p> }
-          <input type="text" name="location" placeholder="Location *" value={contentData.location} onChange={handleChange} />
-          { errors.location && <p className="text-danger">{errors.location}</p> }
-          <textarea name="description" placeholder="Description *" value={contentData.description} onChange={handleChange}></textarea>
-          { errors.description && <p className="text-danger">{errors.description}</p> }
-          <label htmlFor= "categories">Choose the category of your picture</label>
-          <select name="categories" onChange={handleChange}>
-            {categories.map(cat => {
-              return (
-                <option key={cat.id} value={cat.id} > { cat.name } </option>
-              )
-            })} 
-          </select>
-          <label htmlFor="image">Picture</label>
-          <input type="file" name="image" placeholder="Picture" onChange={handleUploadChange} />
-          { errors.image && <p className="text-danger">{errors.image}</p> } 
-          {funding ?
-            <>
-              {/* <form onSubmit={handleFundingSubmit}> */}
-              <input type="text" name="text" placeholder="Why is the money needed" value={fundingDetails.text} onChange={handleFundingChange} />
-              <input type="number" name="target_amount" placeholder="0" value={fundingDetails.target_amount} onChange={handleFundingChange} />
-              {/* </form> */}
-              {/* <input type="submit" value="Confirm funding" className="btn dark" /> */}
-            </>
-            :
-            <>
-              <label htmlFor="fundings">Start a Crowdfunding</label>
-              <input type="radio" name="fundingsYes" placeholder="Yes" value="yes" onChange={(e) => { 
-                e.preventDefault()
-                setFunding(true)
-              }}/>
-              <label htmlFor="Yes">Yes</label>
-              <input type="radio" name="fundingsNo" placeholder="No" value="no" onChange={(e) => {
-                e.preventDefault()
-                setFunding(false)
-              }}/>
-              <label htmlFor="No">No</label>
-            </>
-          }
-          { errors.image && <p className="text-danger">{errors.image}</p> } 
-          <input type="submit" value="Upload" className="btn dark" />
-        </form>
+        <Row>
+          <div className='upload-shape'>
+            <form className='style-upload' onSubmit={handleSubmit}>
+              <input type="text" name="full_name" placeholder="Name or Nickname *" value={contentData.full_name} onChange={handleChange} />
+              { errors.full_name && <p className="text-danger">{errors.full_name}</p> }
+              <input type="text" name="location" placeholder="Location *" value={contentData.location} onChange={handleChange} />
+              { errors.location && <p className="text-danger">{errors.location}</p> }
+              <textarea name="description" placeholder="Description *" value={contentData.description} onChange={handleChange}></textarea>
+              { errors.description && <p className="text-danger">{errors.description}</p> }
+              <label htmlFor= "categories">Choose the category of your picture *</label>
+              <select name="categories" onChange={handleChange}>
+                {categories.map(cat => {
+                  return (
+                    <option key={cat.id} value={cat.id} > { cat.name } </option>
+                  )
+                })} 
+              </select>
+              <label htmlFor="image">Picture *</label>
+              <input type="file" name="image" placeholder="Picture" onChange={handleUploadChange} />
+              { errors.image && <p className="text-danger">{errors.image}</p> } 
+              {funding ?
+                <>
+                  <input type="text" name="text" placeholder="Why is the money needed" value={fundingDetails.text} onChange={handleFundingChange} />
+                  <input type="number" name="target_amount" placeholder="0" value={fundingDetails.target_amount} onChange={handleFundingChange} />
+                </>
+                :
+                <>
+                  <label htmlFor="fundings">Start a Crowdfunding</label>
+                  <input type="radio" name="fundingsYes" placeholder="Yes" value="yes" onChange={(e) => { 
+                    e.preventDefault()
+                    setFunding(true)
+                  }}/>
+                  <label htmlFor="Yes">Yes</label>
+                  <input type="radio" name="fundingsNo" placeholder="No" value="no" onChange={(e) => {
+                    e.preventDefault()
+                    setFunding(false)
+                  }}/>
+                  <label htmlFor="No">No</label>
+                </>
+              }
+              { errors.image && <p className="text-danger">{errors.image}</p> } 
+              <input type="submit" value="Upload" className="btn dark" />
+            </form>
+          </div>
+        </Row>
       </Container>
-      {/* <Container>
-        <ContentForm
-          errors={errors}
-          data={{ text: contentData, file: uploadImage }}
-          handleSubmit={handleSubmit}
-          handleChange={handleChange}
-          // handleUploadChange = {handleUploadChange}
-          
-        />
-      </Container> */}
     </main>
   )
       

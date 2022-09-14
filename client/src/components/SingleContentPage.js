@@ -115,7 +115,7 @@ const SingleContentPage = () => {
 
   const transform = (imageUrl) => {
     const imageTmp = imageUrl.split('/')
-    imageTmp.splice(2, 0, 'w_150,h_300,c_fill/')
+    imageTmp.splice(2, 0, '')
     return imageTmp.join('/')
   } 
 
@@ -130,7 +130,7 @@ const SingleContentPage = () => {
             <p>{ singleContent.description }</p>
           
             <Card>
-              <Card.Img variant='top' src={'https://res.cloudinary.com/dy8qoqcss/' + transform(singleContent.image)}></Card.Img>
+              <Card.Img className="w-100" variant='top' src={'https://res.cloudinary.com/dy8qoqcss/' + transform(singleContent.image)}></Card.Img>
             </Card>
             <Row>
               <button onClick={deleteContent}> DELETE </button>
@@ -152,7 +152,7 @@ const SingleContentPage = () => {
               </>
               :
               <> </> }
-            <form onSubmit={createComment} className="form">
+            <form onSubmit={createComment} className="form-comment">
               <textarea className="text-area" placeholder="Comment Here" rows="6" cols="60" value={userInput} onChange={handleCommentChange}/>
               <button className='submit' type="submit">SEND</button>
             </form>
@@ -161,11 +161,11 @@ const SingleContentPage = () => {
                 <ul> {filterComments(comments).map(comm => {
                   const { id, text } = comm 
                   return (
-                    <div key={id}>
-                      <li> {text} --- {comm.created_at} --- {comm.owner_name} </li>
-                      <button className='delete' onClick={(e)=>{
+                    <div key={id} className= 'com-style'>
+                      <li className= 'comments-field'> {text} --- {comm.created_at} --- {comm.owner_name} </li>
+                      <button className='delete-comment' onClick={(e)=>{
                         deleteComment(id) 
-                      }}> DELETE </button>
+                      }}><img className='trash' src='https://cdn3.iconfinder.com/data/icons/basic-interface/100/delete-512.png'/></button>
                     </div>
                   )
                 })}

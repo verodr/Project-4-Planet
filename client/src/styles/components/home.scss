@@ -1,0 +1,37 @@
+.right-side{
+    display: flex;
+    float: right;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin-left: 200px;
+}
+
+.left-side {
+    display: flex;
+    justify-content: space-around;
+}
+.form-page {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.heading {
+    position:absolute;
+}
+#randbtn{
+border: 1px solid black;
+padding: 10px;
+background-color: black;
+color: white;
+border-radius: 10px;
+}
+
+img {
+    min-height: 100px;
+    min-width: 100px;
+    max-width: 100%;
+    max-height: 100%;
+}
+

@@ -77,7 +77,7 @@ const Home = () => {
 
   const transform = (imageUrl) => {
     const imageTmp = imageUrl.split('/')
-    imageTmp.splice(2, 0, 'w_300,h_200,c_fill/')
+    imageTmp.splice(2, 0, 'w_700,h_500,c_fill/')
     return imageTmp.join('/')
   } 
 
@@ -85,50 +85,51 @@ const Home = () => {
   return (
     <> 
       <Container as="main">
-        <Row>
+        <Row className='left-side'>
           <Col md="6">
             <div className = 'heading'>
               <h4>PLANET<br /><span> EARTH IS </span><br />
                 <span>CALLING</span></h4>
+              <p>Witness extreme events of Climate Change from all around the world <br />
+                  with your shots in real time!
+                  You can also
+                  start fundraising to
+                  help people affected<br />
+                  by natural disasters!</p>
+              { localStorage.getItem('token') ? 
+                <Link to="/contents/upload" className='btn dark' id = "randbtn">Upload</Link>
+                :
+                <Link to="/Login" className='btn dark' id = "randbtn">Upload</Link>
+              }
             </div>
           </Col>
           <Col md="6">
             {Object.values(contents).length > 0 || Object.values(categories) > 0
               ?
               <>
-                <p> Latest uploaded is </p>
-                <img src={'https://res.cloudinary.com/dy8qoqcss/' + transform(contents.image)} />
-                {/* <Dropdown>
-            <Dropdown.Toggle variant='success' id='dropdown-basic'>
-                Collection
-            </Dropdown.Toggle>
-          
-            <Dropdown.Menu  name='collections' id='dropDown' onChange={handleChange}>
-              {categories.map(cat => {
-                <Dropdown.Item key={cat.id} value={cat.name}> { cat.name } </Dropdown.Item>
-              })}
-            </Dropdown.Menu>
-          </Dropdown> */}
-          
-                <select name='collections' id='dropDown' onChange={handleChange}> 
-                  <option key={0} value={'select'}>COLLECTION</option>
-                  <option key={1} value={'ALL'}> ALL </option>
-                  {categories.map(cat => {
-                    return (
-                      <option key={cat.id} value={cat.name}> { cat.name } </option>
-                    )
-                  })} </select>
-                <Link to="/contents/upload" className='btn dark' id = "randbtn">Upload</Link>
-                <ul>
-                  { newsData.length > 0 ?
-                    newsData.map((source) => {
-                      return <ul key={source.source}> ----- {sourceMapping(source.source)} -----
-                        <a href= {source.news[0].url}> <li>{source.news[0].title} </li></a>
-                      </ul>
-                    }) :
-                    <p> Loading latest news... </p>
-                  }
-                </ul>
+                <div className='right-side'>
+                  <p> Latest uploaded is </p>
+                  <img src={'https://res.cloudinary.com/dy8qoqcss/' + transform(contents.image)} />
+                  <select name='collections' id='dropDown' onChange={handleChange}> 
+                    <option key={0} value={'select'}>COLLECTION</option>
+                    <option key={1} value={'ALL'}> ALL </option>
+                    {categories.map(cat => {
+                      return (
+                        <option key={cat.id} value={cat.name}> { cat.name } </option>
+                      )
+                    })} </select>
+                 
+                  <ul>
+                    { newsData.length > 0 ?
+                      newsData.map((source) => {
+                        return <ul key={source.source}> ----- {sourceMapping(source.source)} -----
+                          <a href= {source.news[0].url}> <li>{source.news[0].title} </li></a>
+                        </ul>
+                      }) :
+                      <p> Loading latest news... </p>
+                    }
+                  </ul>
+                </div>
               </>
               :
               <>
