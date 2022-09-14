@@ -157,7 +157,7 @@ const UploadContentPage = () => {
       <Container>
         <Row>
           <div className='upload-shape'>
-            <form className='style-upload' onSubmit={validateForm}>
+            <form className='col-10 offset-1 col-md-6 offset-md-3 text-center' onSubmit={validateForm}>
               { message ? <p className="text-danger">{message}</p> : <></> }
               <input type="text" name="full_name" placeholder="Name or Nickname *" value={contentData.full_name} onChange={handleChange} />
               <input type="text" name="location" placeholder="Location *" value={contentData.location} onChange={handleChange} />
@@ -177,8 +177,8 @@ const UploadContentPage = () => {
               { errors.image && <p className="text-danger">{errors.image}</p> } 
               {funding ?
                 <>
-                  <input type="text" name="text" placeholder="Why is the money needed" value={fundingDetails.text} onChange={handleFundingChange} />
-                  <input type="number" name="target_amount" placeholder="0" value={fundingDetails.target_amount} onChange={handleFundingChange} />
+                  <input type="text" name="text" placeholder="Why is the money needed" value={fundingDetails.text} onChange={handleFundingChange} /> 
+                  <input type="number" name="target_amount" placeholder="0$" value={fundingDetails.target_amount} onChange={handleFundingChange} />
                 </>
                 :
                 <>

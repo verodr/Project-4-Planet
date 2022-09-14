@@ -7,6 +7,10 @@ import { Link } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import DropdownButton from 'react-bootstrap/DropdownButton'
+// import Dropdown from 'react-bootstrap/Dropdown'
 
 const Home = () => {
   const [ contents, setContents ] = useState([])
@@ -70,27 +74,27 @@ const Home = () => {
   }, [])
 
   const handleChange = (event) => {
-    localStorage.setItem('dropDownCategory', event.target.value)
+    localStorage.setItem('dropDownCategory', event)
     navigate('/contents')
   }
 
 
   const transform = (imageUrl) => {
     const imageTmp = imageUrl.split('/')
-    imageTmp.splice(2, 0, 'w_700,h_500,c_fill/')
+    imageTmp.splice(2, 0, 'w_800,h_600,c_fill/')
     return imageTmp.join('/')
   } 
 
   console.log('apinews-->', newsData )
   return (
     <> 
-      <Container as="main">
+      <Container as="main" className='content-index'>
         <Row className='left-side'>
-          <Col md="6">
-            <div className = 'heading'>
-              <h4>PLANET<br /><span> EARTH IS </span><br />
-                <span>CALLING</span></h4>
-              <p>Witness extreme events of Climate Change from all around the world <br />
+          <Col md={true}>
+            <div className = 'heading display-1'>
+              <h1>PLANET<br /><span> EARTH IS </span><br />
+                <span>CALLING</span></h1>
+              <p className='first-page lead'>Witness extreme events of Climate Change from all around the world <br />
                   with your shots in real time!
                   You can also
                   start fundraising to
@@ -103,21 +107,40 @@ const Home = () => {
               }
             </div>
           </Col>
-          <Col md="6">
+          <Col md={true}>
             {Object.values(contents).length > 0 || Object.values(categories) > 0
               ?
               <>
                 <div className='right-side'>
-                  <p> Latest uploaded is </p>
-                  <img src={'https://res.cloudinary.com/dy8qoqcss/' + transform(contents.image)} />
-                  <select name='collections' id='dropDown' onChange={handleChange}> 
+                  <Link key={contents.id} to={`/contents/${contents.id}`}>
+                    <p> Latest uploaded is </p>
+                    <img src={'https://res.cloudinary.com/dy8qoqcss/' + transform(contents.image)} />
+                  </Link>
+                  <DropdownButton
+                    id="dropdown-button-dark-example2"
+                    variant="secondary"
+                    menuVariant="dark"
+                    title="COLLECTION"
+                    className="mt-2"
+                    onSelect={handleChange}
+                  >
+                    {/* <Dropdown.Menu variant="dark" className="colors"> */}
+                    <Dropdown.Item eventKey="ALL" className="bg-dark text-white" variant="dark">ALL</Dropdown.Item>
+                    {/* <Dropdown.Divider /> */}
+                    {categories.map(cat => {
+                      return (
+                        <Dropdown.Item key={cat.id} eventKey={cat.name} > { cat.name } </Dropdown.Item>
+                      )
+                    })}
+                  </DropdownButton>{' '}
+                  {/* <select name='collections' id='dropDown' onChange={handleChange}> 
                     <option key={0} value={'select'}>COLLECTION</option>
                     <option key={1} value={'ALL'}> ALL </option>
                     {categories.map(cat => {
                       return (
                         <option key={cat.id} value={cat.name}> { cat.name } </option>
                       )
-                    })} </select>
+                    })} </select> */}
                  
                   <ul>
                     { newsData.length > 0 ?

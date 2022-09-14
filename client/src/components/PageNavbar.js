@@ -21,21 +21,17 @@ const PageNavbar = () => {
     <Navbar expand="sm">
       <Container as="section">
         <Navbar.Brand as={Link} to="/">🌻</Navbar.Brand>
-      
-        <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end'>
-          <Nav.Link as={Link} to="/">Home</Nav.Link>
-          { authUser() 
-            ?
-            <>
-              <Nav.Link><span onClick={handleLogout}>Logout</span></Nav.Link>
-            </>
-            :
-            <>
-              <Nav.Link as={Link} to="/Register">Register</Nav.Link>
-              <Nav.Link as={Link} to="/Login">Login</Nav.Link>
-            </>
-          }
-        </Navbar.Collapse>
+        { authUser() 
+          ?
+          <>
+            <Nav.Link><span onClick={handleLogout}>Logout</span></Nav.Link>
+          </>
+          :
+          <>
+            <Nav.Link as={Link} to="/Register">Register</Nav.Link>
+            <Nav.Link as={Link} to="/Login">Login</Nav.Link>
+          </>
+        }
       </Container>
     </Navbar>
   )

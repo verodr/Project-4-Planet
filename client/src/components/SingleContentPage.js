@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css'
 import { useEffect, useState } from 'react'
 import { useParams , Link } from 'react-router-dom'
 import axios from 'axios'
@@ -6,6 +7,7 @@ import Row from 'react-bootstrap/Row'
 import { useNavigate } from 'react-router-dom'
 import { getToken } from '../components/auth'
 import Card from 'react-bootstrap/Card'
+import { Button } from 'bootstrap'
 
 const SingleContentPage = () => {
   const { single } = useParams()
@@ -14,9 +16,8 @@ const SingleContentPage = () => {
   const [ comments, setComments] = useState([])
   const [ userInput, setUserInput] = useState('')
   const [ errors, setErrors ] = useState(false)
-  const [ message, setMessage ] = useState('++')
+  const [ message, setMessage ] = useState('')
   const navigate = useNavigate()
-  // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
 
   useEffect(() => {
     const getData = async () => {
@@ -56,11 +57,10 @@ const SingleContentPage = () => {
       })
       setMessage('Donation made!')
       // const res = await axios.put(`http://127.0.0.1:8000/api/fundings/${fundingItem.id}/`, body)
-      // console.log('Donation mande')
+      setMessage('Donation made')
     } catch (error) {
       setErrors(true)
       setMessage(error.response.data.message)
-      // console.log('Error message: ', error.response.data.message)
     }
   }
 
@@ -76,6 +76,7 @@ const SingleContentPage = () => {
       navigate('/')
     } catch (error) {
       console.log('Error message: ', error.response.data.detail)
+      setErrors(true)
       setMessage(error.response.data.detail)
     }
   }
@@ -127,79 +128,102 @@ const SingleContentPage = () => {
 
   const transform = (imageUrl) => {
     const imageTmp = imageUrl.split('/')
-    imageTmp.splice(2, 0, 'w_150,h_150,c_fill')
+    imageTmp.splice(2, 0, '')
+    // imageTmp.splice(2, 0, 'w_150,h_150,c_fill')
     return imageTmp.join('/')
   } 
 
-  // console.log('USER ID, Single Content Page --> ', localStorage.getItem('userId'))
-  // console.log('TOKEN, Single Content Page --> ', localStorage.getItem('token'))
-  console.log('MESSAGE-- ', message)
-  console.log('Error-- ', errors)
+  const formatDate = (string) => {
+    const d = new Date(string).toLocaleString()
+    return d
+  }
 
   return (
-    <Container as="main">
+    <Container as="main"className='content-index text-center'>
       <Row>
         {Object.values(singleContent).length > 0 ?
           <>
-            <p>{ singleContent.description }</p>
-            { errors ? <div className='Error'> Error: {message} </div> 
-              : 
-              <div className='Message'> Message {message} </div> 
-            }
-            <Card>
+            <Card className='w-100'>
               <Card.Img className="w-100" variant='top' src={'https://res.cloudinary.com/dy8qoqcss/' + transform(singleContent.image)}></Card.Img>
+              <Card.Body> 
+                <Card.Title>
+                Created by: { singleContent.full_name }, { singleContent.location }
+                </Card.Title>
+                {/* <Card.Text> */}
+                <div> { singleContent.description } </div>
+                <div> Uploaded at: { formatDate(singleContent.created_at) }</div>
+                { errors ? <div className='Error text-danger'> Error: {message} </div> 
+                  : 
+                  <div className='message'> {message} </div> 
+                }
+                {/* </Card.Text> */}
+              </Card.Body>
+              <Card.Footer>
+                <button onClick={deleteContent}> DELETE </button>
+              </Card.Footer>
             </Card>
-            <Row>
-              <button onClick={deleteContent}> DELETE </button>
-            </Row>
-            {singleContent.fundings.length > 0 ? 
-              <>
-
-                <p> Make a donation, contribute to funding this campaign </p>
-                <form name ='add-funding' onSubmit={(text) => makeDonation(text)}> 
-                  <input type="text"
-                  // name= 'addFunds'
-                    defaultValue=''
-                    placeholder= 'Insert donation amount'
-                    onChange = {handleChange}>
-                  </input> 
-                  <button className='edit' type="submit">EDIT</button>
-                </form> 
-                <p> Current amount: { singleContent.fundings[0].current_amount } </p>
-                <p> Target amount : { singleContent.fundings[0].target_amount } </p>
-              </>
-              :
-              <> </> }
-            <form onSubmit={createComment} className="form-comment">
-              <textarea className="text-area" placeholder="Comment Here" rows="6" cols="60" value={userInput} onChange={handleCommentChange}/>
-              <button className='submit' type="submit">SEND</button>
-            </form>
-            <form>
-              {Object.values(filterComments(comments)).length > 0 ?
-                <ul> {filterComments(comments).map(comm => {
-                  const { id, text } = comm 
-                  return (
-                    <div key={id} className= 'com-style'>
-                      <li className= 'comments-field'> {text} --- {comm.created_at} --- {comm.owner_name} </li>
-                      <button className='delete-comment' onClick={(e)=>{
-                        deleteComment(id) 
-                      }}><img className='trash' src='https://cdn3.iconfinder.com/data/icons/basic-interface/100/delete-512.png'/></button>
-                    </div>
-                  )
-                })}
-                </ul>
+            <Card>
+              {/* <Card.Text> */}
+              {singleContent.fundings.length > 0 ? 
+                <>
+                  <div> Make a donation, contribute to funding this campaign </div>
+                  <div> { singleContent.fundings[0].text }  </div>
+                  <form name ='add-funding'  onSubmit={(text) => makeDonation(text)}> 
+                    <input type="text"
+                      defaultValue=''
+                      placeholder= 'Insert donation amount'
+                      onChange = {handleChange}>
+                    </input> 
+                    <button className='edit' type="submit">EDIT</button>
+                  </form> 
+                  <div> Current amount: ${ singleContent.fundings[0].current_amount } </div>
+                  <div> Target amount :  ${ singleContent.fundings[0].target_amount } </div>
+                </>
                 :
-                <p> no comments</p>
+                <> </> 
               }
-
-            </form>
+              {/* </Card.Text> */}
+            </Card> 
+            
+            <Card>
+              <Card.Body>
+                {/* <Card.Text> */}
+                <form onSubmit={createComment} className="form-comment">
+                  <textarea className="text-area" placeholder="Comment Here" rows="6" cols="60" value={userInput} onChange={handleCommentChange}/>
+                  <button className='submit' type="submit">SEND</button>
+                </form>
+                <form>
+                  {Object.values(filterComments(comments)).length > 0 ?
+                    <ul> {filterComments(comments).map(comm => {
+                      const { id, text } = comm 
+                      return (
+                        <Card key={id} className= 'com-style'>
+                          <Card.Text className= 'comments-field'> {text} --- {formatDate(comm.created_at)} --- {comm.owner_name} </Card.Text>
+                          <button className='btn btn-default trash-icon' onClick={(e)=>{
+                            deleteComment(id) 
+                          }}>
+                            <Card.Img className='trash-icon' src='https://res.cloudinary.com/dy8qoqcss/image/upload/w_150,h_150,c_fill/v1663181983/samples/trash_ax56aa.png'/>
+                          </button>
+                            
+                        </Card>
+                      )
+                    })}
+                    </ul>
+                    :
+                    <div> no comments</div>
+                  }
+                </form>
+                {/* </Card.Text> */}
+              </Card.Body>
+            </Card>
+           
           </>
           :
           <>
-            {errors ? <h2>Something went wrong. Please try again later</h2> : <p>Loading...</p>}
+            {errors ? <h2>Something went wrong. Please try again later</h2> : <div>Loading...</div>}
           </>
 
-        }
+        } 
       </Row>
     </Container>
 

@@ -1,2 +1,1 @@
-[
-]
+[{"model": "fundings.funding", "pk": 1, "fields": {"text": "The donations will provide emergency shelters, food packs and cash grants to people who need help in Pakistan.", "current_amount": 200, "target_amount": 1000000, "content": 5, "owner": 7}}, {"model": "fundings.funding", "pk": 2, "fields": {"text": "Help us to save them from the exstinction", "current_amount": 0, "target_amount": 1000000, "content": 8, "owner": 10}}]

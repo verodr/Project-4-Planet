@@ -20,10 +20,36 @@
     align-items: flex-start;
 }
 .trash{
-    height: 20px;
+    height: 10px;
 }
 .com-style {
     display: flex;
     flex-direction: column;
     align-items: flex-start
+}
+.content-index {
+    a {
+        text-decoration: none;
+    }
+}
+
+.card {
+    margin: 0 auto; /* Added */
+    float: none; /* Added */
+    margin-bottom: 10px; /* Added */
+}
+
+.card-img-top {
+    width: 100%;
+    height: 50vw;
+    object-fit: cover;
+}
+
+.btn-default {
+    width: 10%;
+    height: 10%;
+}
+
+.trash-icon {
+    width: 50px;
 }

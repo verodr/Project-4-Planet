@@ -47,9 +47,9 @@ const Login = () => {
         <Row>
           <div className='login-body'>
             <div className='login-container'>
-              <h1 className='login-title'>Login Form</h1>
               {errors && <div className='error'>{errors}</div>}
-              <form onSubmit={onSubmit} className='login-form'>
+              <form className='col-10 offset-1 col-md-6 offset-md-3' onSubmit={onSubmit}>
+                <h1 className='login-title'>Login Form</h1>
                 <input 
                   type='text' name='email' placeholder='email' value={loginData.email} onChange={handleChange}
                 />

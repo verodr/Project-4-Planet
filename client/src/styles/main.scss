@@ -1,9 +1,25 @@
 * {
   box-sizing: border-box;
-  
+  font-family: "Times New Roman", Times, serif;
 }
-a {
+
+.list-container {
+  padding-top: 20px;
+  margin-top: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.list-wrapper {
+  // background-image: url(../Images/fancylights.avif);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center; 
   text-decoration: none;
+}
+
+.list-card {
+  background: rgba(50, 50, 50, 0.8);
 }
 
 
@@ -30,3 +46,4 @@ a {
   }
 
 }
+
