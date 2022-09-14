@@ -14,6 +14,7 @@ const SingleContentPage = () => {
   const [ comments, setComments] = useState([])
   const [ userInput, setUserInput] = useState('')
   const [ errors, setErrors ] = useState(false)
+  const [ message, setMessage ] = useState('++')
   const navigate = useNavigate()
   // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
 
@@ -32,7 +33,7 @@ const SingleContentPage = () => {
       }
     }
     getData()
-  }, [])
+  }, [message])
 
   const handleChange = (e) => {
     setDonation(e.target.value)
@@ -53,10 +54,13 @@ const SingleContentPage = () => {
           Authorization: `Bearer ${getToken()}`,
         },
       })
+      setMessage('Donation made!')
       // const res = await axios.put(`http://127.0.0.1:8000/api/fundings/${fundingItem.id}/`, body)
-      console.log('Donation mande')
+      // console.log('Donation mande')
     } catch (error) {
-      console.log('Error message: ', error.response.data.message)
+      setErrors(true)
+      setMessage(error.response.data.message)
+      // console.log('Error message: ', error.response.data.message)
     }
   }
 
@@ -71,7 +75,8 @@ const SingleContentPage = () => {
       console.log('Content Deleted')
       navigate('/')
     } catch (error) {
-      console.log('Error message: ', error.response.data.message)
+      console.log('Error message: ', error.response.data.detail)
+      setMessage(error.response.data.detail)
     }
   }
 
@@ -85,10 +90,13 @@ const SingleContentPage = () => {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      console.log('comment created')
+      setMessage('Comment created')
       setUserInput('')
+      console.log('comment created')
+      // setMessage('Comment created')
     } catch (error) {
       console.log('Error message: ', error.response.data.message)
+      setMessage(error.response.data.message)
     }
   }
 
@@ -100,8 +108,10 @@ const SingleContentPage = () => {
         },
       })
       console.log('Comment Deleted')
+      setMessage('Comment deleted')
     } catch (error) {
       console.log('Error message: ', error.response.data.message)
+      setMessage(error.response.data.message)
     }
   }
 
@@ -115,12 +125,14 @@ const SingleContentPage = () => {
 
   const transform = (imageUrl) => {
     const imageTmp = imageUrl.split('/')
-    imageTmp.splice(2, 0, '')
+    imageTmp.splice(2, 0, 'w_150,h_150,c_fill')
     return imageTmp.join('/')
   } 
 
-  console.log('USER ID, Single Content Page --> ', localStorage.getItem('userId'))
-  console.log('TOKEN, Single Content Page --> ', localStorage.getItem('token'))
+  // console.log('USER ID, Single Content Page --> ', localStorage.getItem('userId'))
+  // console.log('TOKEN, Single Content Page --> ', localStorage.getItem('token'))
+  console.log('MESSAGE-- ', message)
+  console.log('Error-- ', errors)
 
   return (
     <Container as="main">
@@ -128,7 +140,10 @@ const SingleContentPage = () => {
         {Object.values(singleContent).length > 0 ?
           <>
             <p>{ singleContent.description }</p>
-          
+            { errors ? <div className='Error'> Error: {message} </div> 
+              : 
+              <div className='Message'> Message {message} </div> 
+            }
             <Card>
               <Card.Img className="w-100" variant='top' src={'https://res.cloudinary.com/dy8qoqcss/' + transform(singleContent.image)}></Card.Img>
             </Card>
@@ -137,6 +152,7 @@ const SingleContentPage = () => {
             </Row>
             {singleContent.fundings.length > 0 ? 
               <>
+
                 <p> Make a donation, contribute to funding this campaign </p>
                 <form name ='add-funding' onSubmit={(text) => makeDonation(text)}> 
                   <input type="text"
