@@ -22,24 +22,6 @@ class RegisterView(APIView):
             print(e)
             return Response(e.__dict__ if e.__dict__ else str(e), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-    
-    # def post(self, request):
-    #     user_to_create = UserSerializer(data=request.data)
-    #     if  user_to_create.is_valid():
-    #         user = user_to_create.save()
-    #         dt = datetime.now() + timedelta(days=7) 
-
-    #         token = jwt.encode(
-    #             {
-    #                 "sub": user.id,
-    #                 "exp": int(dt.strftime('%s'))
-    #             },
-    #             settings.SECRET_KEY,
-    #             "HS256"
-    #         )
-    #     return Response(user_to_create.data, status=status.HTTP_202_ACCEPTED)
-        
-        # return Response(e.__dict__ if e.__dict__ else str(e), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
 class LoginView(APIView):

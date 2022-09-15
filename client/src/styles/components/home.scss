@@ -18,9 +18,12 @@
 }
 
 .heading {
-    position:absolute;
+    position:relative;
+    margin-left: 10px;
+    margin-right: 20px;
 }
-#randbtn, .login-button, .register-button{
+
+#randbtn, .login-button, .register-button, .del, #upload-contents{
 border: 1px solid black;
 padding: 10px;
 background-color: black;
@@ -36,6 +39,26 @@ img {
 
 .first-page {
     text-shadow: 2px 2px #f9f9f9;
-    font-size: 30px
+    font-size: 30px;
 }
 
+.latest-upload{
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    color: black;
+    font-size: 18px;
+}
+.latest-news {
+    background: #057379;
+    margin-top: 10px;
+    line-height: 1.8em;
+    font-size: 19px;
+    padding-right: 10px;
+    li {
+        color: white;
+    }
+}
+.col-md {
+    position: relative;
+}

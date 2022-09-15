@@ -10,8 +10,6 @@ import Card from 'react-bootstrap/Card'
 const ContentsPage = () => {
   const [contents, setContents ] = useState([])
   const [ errors, setErrors ] =  useState(false)
-  // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
-
 
   useEffect(() => {
     const getData = async () => {
@@ -31,7 +29,6 @@ const ContentsPage = () => {
   const transform = (imageUrl) => {
     const imageTmp = imageUrl.split('/')
     imageTmp.splice(2, 0, 'w_600,h_338,c_fill')
-    // imageTmp.splice(2, 0, '')
     return imageTmp.join('/')
   } 
 
@@ -54,9 +51,9 @@ const ContentsPage = () => {
                 <Col key={id} md="6" lg="4" className='mb-4'>
                   <Link key={id} to={`/contents/${id}`}>
                     <Card className='list-card'>
-                      <p> { content.full_name } </p>
+                      <p className='location'> {location} - { formatDate(content.created_at) }</p>
                       <img src={'https://res.cloudinary.com/dy8qoqcss/' + transform(image)}/>
-                      <p className='location'> { formatDate(content.created_at) } -- {location} </p>
+                      <p> { content.full_name } </p>
                     </Card>
                   </Link>
                 </Col>
@@ -67,8 +64,7 @@ const ContentsPage = () => {
       </Container>
     </div>
   )
- 
+
 }
 
 export default ContentsPage
-//http://127.0.0.1:8000/

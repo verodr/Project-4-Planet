@@ -23,7 +23,6 @@ const SingleContentPage = () => {
     const getData = async () => {
       try {
         const res = await axios.get(`/api/contents/${single}/`)
-        console.log('res.data-->' , res.data)
         setSingleContent(res.data)
         setComments(res.data.comments)
       } catch (err) {
@@ -45,22 +44,21 @@ const SingleContentPage = () => {
   }
 
   const makeDonation = async (e) => {
+   
     const fundingItem = singleContent.fundings[0]
     const body = { ...fundingItem, current_amount: donation }
     console.log('This is the amount', donation)
-    
     try {
       const res = await axios.put(`/api/fundings/${fundingItem.id}/`, body, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      setMessage('Donation made!')
-      // const res = await axios.put(`http://127.0.0.1:8000/api/fundings/${fundingItem.id}/`, body)
-      setMessage('Donation made')
+      setMessage(donation)
+      setDonation('')
     } catch (error) {
       setErrors(true)
-      setMessage(error.response.data.message)
+      setMessage(error.response.data.detail)
     }
   }
 
@@ -72,7 +70,6 @@ const SingleContentPage = () => {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      console.log('Content Deleted')
       navigate('/')
     } catch (error) {
       console.log('Error message: ', error.response.data.detail)
@@ -81,7 +78,7 @@ const SingleContentPage = () => {
     }
   }
 
-  const createComment = async (e) => {
+  const createComment = async () => {
     const id = singleContent.id 
     const ownerId = localStorage.getItem('userId')
     const body = { content: id , text: userInput, owner: ownerId, owner_name: localStorage.getItem('message') }
@@ -91,51 +88,50 @@ const SingleContentPage = () => {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      setMessage('Comment created')
-      // setUserInput('')
+      setMessage(userInput)
+      setUserInput('')
       console.log('comment created')
       return 'Comment created'
-      // setMessage('Comment created')
     } catch (error) {
-      console.log('Error message: ', error.response.data.detail)
       setMessage(error.response.data.detail)
-      return error.response.data.detail
     }
   }
 
-  const deleteComment = async (commentId) => {
+  const deleteComment = async (e, commentId) => {
     try {
       const res = await axios.delete(`/api/comments/${commentId}/`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      console.log('Comment Deleted')
-      setMessage('Comment deleted')
+      setMessage(commentId)
     } catch (error) {
-      console.log('Error message: ', error.response.data.message)
-      setMessage(error.response.data.message)
+      setMessage(error.response.data.detail)
     }
-  }
-
-  const filterComments = (cmts) => {
-    const temp = cmts.filter( (singlecom) => {
-      return singlecom.content.toString() === single
-    })
-    console.log('TEMP', temp)
-    return temp
   }
 
   const transform = (imageUrl) => {
     const imageTmp = imageUrl.split('/')
     imageTmp.splice(2, 0, '')
-    // imageTmp.splice(2, 0, 'w_150,h_150,c_fill')
     return imageTmp.join('/')
   } 
 
   const formatDate = (string) => {
     const d = new Date(string).toLocaleString()
     return d
+  }
+
+  const formatError = (string) => {
+    console.log('This is the string--', string)
+    if (string === 'Invalid Token'){
+      return 'You should login to perform this action!' 
+    } 
+    if (string === 'Unauthorised') {
+      return 'You are not authorized to perform this action!'
+    }
+    if (typeof(string) === 'object' ){
+      return string.text
+    }
   }
 
   return (
@@ -149,74 +145,73 @@ const SingleContentPage = () => {
                 <Card.Title>
                 Created by: { singleContent.full_name }, { singleContent.location }
                 </Card.Title>
-                {/* <Card.Text> */}
                 <div> { singleContent.description } </div>
                 <div> Uploaded at: { formatDate(singleContent.created_at) }</div>
-                { errors ? <div className='Error text-danger'> Error: {message} </div> 
-                  : 
-                  <div className='message'> {message} </div> 
-                }
-                {/* </Card.Text> */}
+                { <div className='Error text-danger'> {formatError(message)} </div> }
               </Card.Body>
-              <Card.Footer>
-                <button onClick={deleteContent}> DELETE </button>
+              <Card.Footer id='delete-back'>
+                <button className="del" onClick={deleteContent}> DELETE </button>
               </Card.Footer>
             </Card>
             <Card>
-              {/* <Card.Text> */}
               {singleContent.fundings.length > 0 ? 
                 <>
                   <div> Make a donation, contribute to funding this campaign </div>
                   <div> { singleContent.fundings[0].text }  </div>
-                  <form name ='add-funding'  onSubmit={(text) => makeDonation(text)}> 
-                    <input type="text"
+                  <form name ='add-funding' onSubmit={(text) => makeDonation(text)}> 
+                    <input type='text'
+                      className='add-fund'
                       defaultValue=''
+                      disabled={parseFloat(singleContent.fundings[0].target_amount) - parseFloat(singleContent.fundings[0].current_amount) <= 0 ? true : false}
                       placeholder= 'Insert donation amount'
                       onChange = {handleChange}>
                     </input> 
-                    <button className='edit' type="submit">EDIT</button>
                   </form> 
+                  <div className='donate-btn'>
+                    <button className='edit' 
+                      type="submit" 
+                      disabled={parseFloat(singleContent.fundings[0].target_amount) - parseFloat(singleContent.fundings[0].current_amount) <= 0 ? true : false}
+                      onClick={(text) => makeDonation(text)}>
+                        DONATE
+                    </button>
+                  </div>
                   <div> Current amount: ${ singleContent.fundings[0].current_amount } </div>
-                  <div> Target amount :  ${ singleContent.fundings[0].target_amount } </div>
+                  <div className='target-color'> Target amount :  ${ singleContent.fundings[0].target_amount } </div>
+                  { parseFloat(singleContent.fundings[0].target_amount) - parseFloat(singleContent.fundings[0].current_amount) <= 0 ? <p className='text-warning'> Congratulations you hit the target!! </p> : <></> }
                 </>
                 :
                 <> </> 
               }
-              {/* </Card.Text> */}
             </Card> 
             
-            <Card>
-              <Card.Body>
-                {/* <Card.Text> */}
+            <Card id='back-del'>
+              <Card.Body className='comment-box'>
                 <form onSubmit={createComment} className="form-comment">
                   <textarea className="text-area" placeholder="Comment Here" rows="6" cols="60" value={userInput} onChange={handleCommentChange}/>
-                  <button className='submit' type="submit">SEND</button>
                 </form>
-                <form>
-                  {Object.values(filterComments(comments)).length > 0 ?
-                    <ul> {filterComments(comments).map(comm => {
-                      const { id, text } = comm 
-                      return (
-                        <Card key={id} className= 'com-style'>
-                          <Card.Text className= 'comments-field'> {text} --- {formatDate(comm.created_at)} --- {comm.owner_name} </Card.Text>
-                          <button className='btn btn-default trash-icon' onClick={(e)=>{
-                            deleteComment(id) 
-                          }}>
-                            <Card.Img className='trash-icon' src='https://res.cloudinary.com/dy8qoqcss/image/upload/w_150,h_150,c_fill/v1663181983/samples/trash_ax56aa.png'/>
-                          </button>
-                            
-                        </Card>
-                      )
-                    })}
-                    </ul>
-                    :
-                    <div> no comments</div>
-                  }
-                </form>
-                {/* </Card.Text> */}
+                <button className='submit send' type="submit" onClick={createComment}>SEND</button>
+                {/* <form> */}
+                {Object.values(comments).length > 0 ?
+                  <ul> {comments.map(comm => {
+                    const { id, text } = comm 
+                    return (
+                      <Card key={id} className= 'com-style'>
+                        <Card.Text className= 'comments-field'> {text}  by {comm.owner_name} at {formatDate(comm.created_at)} </Card.Text>
+                        <button className='btn btn-default trash-icon' onClick={(e)=>{
+                          deleteComment(e, id) 
+                        }}>
+                          <Card.Img className='trash-icon justify-content-right' src='https://res.cloudinary.com/dy8qoqcss/image/upload/w_150,h_150,c_fill/v1663181983/samples/trash_ax56aa.png'/>
+                        </button>
+                      </Card>
+                    )
+                  })}
+                  </ul>
+                  :
+                  <div> no comments</div>
+                }
+                {/* </form> */}
               </Card.Body>
             </Card>
-           
           </>
           :
           <>

@@ -8,11 +8,10 @@
 
 .comments-field {
     height: 45px;
-    margin-top: 20px;
     margin-bottom: 10px;
-    max-width: 60%;
-    max-height: 50%; 
     list-style: none;
+    text-align: left;
+    padding-left: 5px;;
 }
 .form-comment {
     display: flex;
@@ -25,7 +24,7 @@
 .com-style {
     display: flex;
     flex-direction: column;
-    align-items: flex-start
+    align-items: flex-start;
 }
 .content-index {
     a {
@@ -52,4 +51,31 @@
 
 .trash-icon {
     width: 50px;
+    margin-top: 10px;
 }
+
+.send {
+    margin-bottom: 10px;
+    border: 1px solid black;
+    padding: 10px;
+    background: #057379;
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.edit{
+    border: 1px solid #000000;
+    background-color: #8f820f;
+    color: white;
+}
+.target-color {
+    color: #8f820f;
+}
+.comment-box, #delete-back, #back-del {
+    background-color: #efefe3;
+}
+.add-fund {
+    width: 200px;
+}
+

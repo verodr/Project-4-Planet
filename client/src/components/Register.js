@@ -31,41 +31,16 @@ const Register = () => {
       navigate('/login')
     } catch (error) {
       console.log(error)
-      setErrors(error.response.data.message)
+      setErrors(error.response.data.detail)
     }
-  
   }
   
-  // const validateForm = (event) => {
-  //   event.preventDefault()
-  //   setMessage('')
-  //   console.log('THIS is the data-- ', categories)
-  //   console.log(uploadImage.length < 1)
-  //   if (contentData.full_name === '') {
-  //     setMessage('Name is required')
-  //   } else
-  //   if (contentData.location === '') {
-  //     setMessage('Location is required')
-  //   } else 
-  //   if (contentData.description === '') {
-  //     setMessage('Description is required')
-  //   } else
-  //   if (uploadImage.length < 1) {
-  //     setMessage('Image is required') 
-  //   } else 
-  //   if (contentData.categories === '') {
-  //     setMessage('Please select a category')
-  //   } else {
-  //     handleSubmit(event)
-  //   }
-  // }
 
   return (
     <main className='form-page'>
       <Container>
         <Row>
           <div className='register-container'>
-            {errors && <div className='error'>{errors}</div>}
             <form onSubmit={onSubmit} className='col-10 offset-1 col-md-6 offset-md-3'>
               <h1 className='register-title'>Registration form</h1>
               <input 
@@ -77,6 +52,10 @@ const Register = () => {
               />
               <input type='password' name='password_confirmation' placeholder='Confirm Password *' value={registerData.password_confirmation} onChange={handleChange}
               />
+              <div className='error text-danger'>{errors.email}</div> 
+              <div className='error text-danger'>{errors.username}</div>
+              <div className='error text-danger'>{errors.non_field_errors}</div>
+              <div className='error text-danger'>{errors.password_confirmation}</div>
               <div className='register-button-container'>
                 <button type='submit' className='register-button'>Register</button>
               </div>

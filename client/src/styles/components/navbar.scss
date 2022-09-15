@@ -1,16 +1,12 @@
 .navbar{
     box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
     font-family: "Times New Roman", Times, serif;
+    background: #057379;
+    font-size: 18px;
     .nav-link, span{
       margin-left: 10px;
       cursor: pointer;
+      color: rgb(255, 255, 255);
     }
   }
 
-  // .container {
-  //   display: flex;
-  //   flex-direction: row;
-  //   justify-content: space-between;
-  //   align-items: flex-end;
-  //   margin: 0px 20px;
-  // }

@@ -1,10 +1,8 @@
-
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { getToken } from '../components/auth'
-import ContentForm from './ContentForm'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/esm/Row'
 
@@ -61,17 +59,7 @@ const UploadContentPage = () => {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      console.log('DATA-->', data)
-      // setNewContentId(data.id)
-      // const ownerId = localStorage.getItem('userId')
-      // const fundingBody = { ...fundingDetails, current_amout: 0, id: data.data.id , owner: ownerId }
-      // const { dataF } = await axios.post('http://127.0.0.1:8000/api/fundings/', fundingBody, {
-      //   headers: {
-      //     Authorization: `Bearer ${getToken()}`,
-      //   },
-      // })
-      // Navigate to the single page
-      // navigate(`/contents/${data.id}`)
+
       return data.id
     } catch (err) {
       console.log(err.response.data)
@@ -125,7 +113,6 @@ const UploadContentPage = () => {
     event.preventDefault()
     try {
       const id = await handleContentSubmit()
-      console.log('This is the ID--> ', id)
       if (id !== 0){
         await handleFundingSubmit(id)
       }
@@ -196,7 +183,7 @@ const UploadContentPage = () => {
                 </>
               }
               { errors.image && <p className="text-danger">{errors.image}</p> } 
-              <input type="submit" value="Upload" className="btn dark" />
+              <input type="submit" value="Upload" className="btn dark" id="upload-contents"/>
             </form>
           </div>
         </Row>

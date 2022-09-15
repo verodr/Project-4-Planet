@@ -1,27 +1,44 @@
 .App{
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    main {
-        flex-grow: 1;
-        padding-top: 20px;
-      }
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  main {
+      flex-grow: 1;
+      padding-top: 20px;
+    }
+}
+
+#footer-col {
+  background: #efefe3
 }
 
 
 .heading {
-    font-family: "Times New Roman", Times, serif;
-    .h1, h1 {
-        font-size: 30px;
-        text-shadow: 2px 2px #f9f9f9;
-    }
+  font-family: "Times New Roman", Times, serif;
+  .h1, h1 {
+      font-size: 35px;
+      text-shadow: 2px 2px #f9f9f9;
+      margin-top: 10px;
+  }
+  #randbtn {
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 18px;
+  }
+  .lead {
+    font-size: 23px;
+  }
 }
 
+
 @media (min-width: 800px) {
-    .heading {
-        .h1, h1 {
-            font-size: 70px;
-            text-shadow: 2px 2px #f9f9f9;
-        }
-    }
+  .heading {
+      .h1, h1 {
+          font-size: 90px;
+          text-shadow: 2px 2px #f9f9f9;
+      }
+      .lead {
+        font-size: 25px;
+      }
   }
+}

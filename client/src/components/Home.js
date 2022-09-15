@@ -1,3 +1,4 @@
+import env from 'react-dotenv'
 import { createContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -10,7 +11,6 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import DropdownButton from 'react-bootstrap/DropdownButton'
-// import Dropdown from 'react-bootstrap/Dropdown'
 
 const Home = () => {
   const [ contents, setContents ] = useState([])
@@ -18,7 +18,8 @@ const Home = () => {
   const [ errors, setErrors ] = useState(false)
   const navigate = useNavigate()
   const axios = require('axios')
-  // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+  // const rapidapikey = process.env.REACT_APP_RAPID_API_KEY
+  // console.log('-->', env)
 
   const [ newsData, setNewsData ] = useState([])
   useEffect(() => {
@@ -91,11 +92,11 @@ const Home = () => {
       <Container as="main" className='content-index'>
         <Row className='left-side'>
           <Col md={true}>
-            <div className = 'heading display-1'>
+            <div className = 'heading'>
               <h1>PLANET<br /><span> EARTH IS </span><br />
                 <span>CALLING</span></h1>
-              <p className='first-page lead'>Witness extreme events of Climate Change from all around the world <br />
-                  with your shots in real time!
+              <p className='first-page lead'>Document extreme Climate Change events from all around the world <br />
+                  with your shots in real time!<br />
                   You can also
                   start fundraising to
                   help people affected<br />
@@ -113,7 +114,7 @@ const Home = () => {
               <>
                 <div className='right-side'>
                   <Link key={contents.id} to={`/contents/${contents.id}`}>
-                    <p> Latest uploaded is </p>
+                    <p className='latest-upload'> Latest uploaded is </p>
                     <img src={'https://res.cloudinary.com/dy8qoqcss/' + transform(contents.image)} />
                   </Link>
                   <DropdownButton
@@ -133,23 +134,17 @@ const Home = () => {
                       )
                     })}
                   </DropdownButton>{' '}
-                  {/* <select name='collections' id='dropDown' onChange={handleChange}> 
-                    <option key={0} value={'select'}>COLLECTION</option>
-                    <option key={1} value={'ALL'}> ALL </option>
-                    {categories.map(cat => {
-                      return (
-                        <option key={cat.id} value={cat.name}> { cat.name } </option>
-                      )
-                    })} </select> */}
-                 
-                  <ul>
+                  <ul className='latest-news'>
                     { newsData.length > 0 ?
                       newsData.map((source) => {
-                        return <ul key={source.source}> ----- {sourceMapping(source.source)} -----
-                          <a href= {source.news[0].url}> <li>{source.news[0].title} </li></a>
+                        return <ul key={source.source}> ------ {sourceMapping(source.source)} ------
+                          <a href= {source.news[0].url} target="_blank" rel="noopener noreferrer"> <li>{source.news[0].title}</li></a>
                         </ul>
                       }) :
-                      <p> Loading latest news... </p>
+                      <>
+                        <div className="spinner-border text-dark"></div>
+                        <p> Loading latest news... </p>
+                      </>
                     }
                   </ul>
                 </div>

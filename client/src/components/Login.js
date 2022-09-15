@@ -26,20 +26,18 @@ const Login = () => {
     try {
       const res = await axios.post('http://127.0.0.1:8000/api/auth/login/', loginData)
       const { token, id, message } = res.data
-      console.log('ID-->', id)
-      console.log('DATA-->', res.data)
       localStorage.setItem('token', token)
       localStorage.setItem('userId', id)
       localStorage.setItem('message', message)
       axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
-      console.log('What Axios gets--', `Bearer ${localStorage.getItem('token')}` )
       navigate('/')
     } catch (error) {
       console.log(error)
-      setErrors(error.response.data.message)
+      setErrors(error.response.data.detail)
     }
   }
   
+  console.log(errors)
   
   return (
     <main className='form-page'>
@@ -47,7 +45,6 @@ const Login = () => {
         <Row>
           <div className='login-body'>
             <div className='login-container'>
-              {errors && <div className='error'>{errors}</div>}
               <form className='col-10 offset-1 col-md-6 offset-md-3' onSubmit={onSubmit}>
                 <h1 className='login-title'>Login Form</h1>
                 <input 
@@ -55,6 +52,7 @@ const Login = () => {
                 />
                 <input type='password' name='password' placeholder='Password' value={loginData.password} onChange={handleChange}
                 />
+                {errors && <div className='error text-danger'>{errors}</div>}
                 <div className='login-button-container'>
                   <button type='submit' className='login-button'>Login</button>
                 </div>
