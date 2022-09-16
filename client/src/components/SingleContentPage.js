@@ -54,7 +54,7 @@ const SingleContentPage = () => {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      setMessage(donation)
+      setMessage(`of ${donation}`)
       setDonation('')
     } catch (error) {
       setErrors(true)
@@ -178,6 +178,7 @@ const SingleContentPage = () => {
                   <div> Current amount: ${ singleContent.fundings[0].current_amount } </div>
                   <div className='target-color'> Target amount :  ${ singleContent.fundings[0].target_amount } </div>
                   { parseFloat(singleContent.fundings[0].target_amount) - parseFloat(singleContent.fundings[0].current_amount) <= 0 ? <p className='text-warning'> Congratulations you hit the target!! </p> : <></> }
+                  { message.indexOf('of') !== -1 ? <div className='Error text-warning'> Thank you for your donation! </div> : <></> }
                 </>
                 :
                 <> </> 
