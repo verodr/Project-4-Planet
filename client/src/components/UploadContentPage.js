@@ -31,7 +31,7 @@ const UploadContentPage = () => {
     const getData = async () => {
       try {
         const collection = await axios.get('/api/categories')
-        const select = { id: 0, name: 'Select', contets: [] }
+        const select = { id: 0, name: 'Select', contents: [] }
         collection.data.splice(0, 0, select)
         setCategories(collection.data)
       } catch (errors) {
@@ -43,8 +43,6 @@ const UploadContentPage = () => {
   }, [])
   
   const handleContentSubmit = async (event) => {
-
-    console.log('FF--> ', fundingDetails)
     try {
       var ct = new FormData()
       ct.append('full_name', contentData.full_name)
@@ -108,7 +106,7 @@ const UploadContentPage = () => {
     }
   }
 
-
+  //allows me to upload at once content and funding, waiting if the content goes through properly taking its id to create an associated fundings campaign
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {

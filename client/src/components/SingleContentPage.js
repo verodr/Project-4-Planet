@@ -104,7 +104,7 @@ const SingleContentPage = () => {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      setMessage(commentId)
+      setMessage(`deleted ${commentId}`)
     } catch (error) {
       setMessage(error.response.data.detail)
     }
@@ -129,8 +129,21 @@ const SingleContentPage = () => {
     if (string === 'Unauthorised') {
       return 'You are not authorized to perform this action!'
     }
+    if (string === 'donation') {
+      return 'Donation amount is required!'
+    }
     if (typeof(string) === 'object' ){
       return string.text
+    }
+  }
+
+  const validateForm = (event, text) => {
+    event.preventDefault()
+    setMessage('')
+    if (donation === '') {
+      setMessage('donation')
+    } else {
+      makeDonation(text)
     }
   }
 
@@ -158,7 +171,7 @@ const SingleContentPage = () => {
                 <>
                   <div> Make a donation, contribute to funding this campaign </div>
                   <div> { singleContent.fundings[0].text }  </div>
-                  <form name ='add-funding' onSubmit={(text) => makeDonation(text)}> 
+                  <form name ='add-funding'> 
                     <input type='text'
                       className='add-fund'
                       defaultValue=''
@@ -171,7 +184,7 @@ const SingleContentPage = () => {
                     <button className='edit' 
                       type="submit" 
                       disabled={parseFloat(singleContent.fundings[0].target_amount) - parseFloat(singleContent.fundings[0].current_amount) <= 0 ? true : false}
-                      onClick={(text) => makeDonation(text)}>
+                      onClick={(e, text) => validateForm(e, text)}>
                         DONATE
                     </button>
                   </div>

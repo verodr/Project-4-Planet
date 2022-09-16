@@ -65,7 +65,7 @@ const Home = () => {
         const collection = await axios.get('http://127.0.0.1:8000/api/categories')
         setContents(latest.data)
         setCategories(collection.data)
-        // console.log(collection.data)
+        
       } catch (errors) {
         console.log(errors)
         setErrors(true)
