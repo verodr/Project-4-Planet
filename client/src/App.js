@@ -18,7 +18,6 @@ const App = () => {
   useEffect(() => {
     const getData = async () => {
       const { data } = await axios.get('/api/contents/')
-      console.log(data)
     }
     getData()
   })

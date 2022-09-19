@@ -44,10 +44,8 @@ const SingleContentPage = () => {
   }
 
   const makeDonation = async (e) => {
-   
     const fundingItem = singleContent.fundings[0]
     const body = { ...fundingItem, current_amount: donation }
-    console.log('This is the amount', donation)
     try {
       const res = await axios.put(`/api/fundings/${fundingItem.id}/`, body, {
         headers: {
@@ -72,7 +70,6 @@ const SingleContentPage = () => {
       })
       navigate('/')
     } catch (error) {
-      console.log('Error message: ', error.response.data.detail)
       setErrors(true)
       setMessage(error.response.data.detail)
     }
@@ -90,7 +87,6 @@ const SingleContentPage = () => {
       })
       setMessage(userInput)
       setUserInput('')
-      console.log('comment created')
       return 'Comment created'
     } catch (error) {
       setMessage(error.response.data.detail)
@@ -122,28 +118,47 @@ const SingleContentPage = () => {
   }
 
   const formatError = (string) => {
-    console.log('This is the string--', string)
     if (string === 'Invalid Token'){
       return 'You should login to perform this action!' 
     } 
     if (string === 'Unauthorised') {
       return 'You are not authorized to perform this action!'
     }
-    if (string === 'donation') {
+    if (string === 'no-donation') {
       return 'Donation amount is required!'
+    }
+    if (string === 'wrong-donation') {
+      return 'Invald donation amount!'
+    }
+    if (string === 'no-comment') {
+      return 'Comment cannot be blank'
     }
     if (typeof(string) === 'object' ){
       return string.text
     }
   }
 
-  const validateForm = (event, text) => {
+  const validateDonationForm = (event, text) => {
     event.preventDefault()
     setMessage('')
     if (donation === '') {
-      setMessage('donation')
+      setMessage('no-donation')
     } else {
-      makeDonation(text)
+      try {
+        // const aa = parseFloat(text)
+        makeDonation(parseFloat(text))
+      } catch (err) {
+        setMessage('wrong-donation')
+      }
+    }
+  }
+
+  const validateCommentForm = (event, text) => {
+    event.preventDefault()
+    if (userInput === '') {
+      setMessage('no-comment')
+    } else {
+      createComment(text)
     }
   }
 
@@ -160,7 +175,7 @@ const SingleContentPage = () => {
                 </Card.Title>
                 <div> { singleContent.description } </div>
                 <div> Uploaded at: { formatDate(singleContent.created_at) }</div>
-                { <div className='Error text-danger'> {formatError(message)} </div> }
+                { <div className='Error text-danger'> {formatError(message)} </div>  }
               </Card.Body>
               <Card.Footer id='delete-back'>
                 <button className="del" onClick={deleteContent}> DELETE </button>
@@ -172,7 +187,7 @@ const SingleContentPage = () => {
                   <div> Make a donation, contribute to funding this campaign </div>
                   <div> { singleContent.fundings[0].text }  </div>
                   <form name ='add-funding'> 
-                    <input type='text'
+                    <input type='number'
                       className='add-fund'
                       defaultValue=''
                       disabled={parseFloat(singleContent.fundings[0].target_amount) - parseFloat(singleContent.fundings[0].current_amount) <= 0 ? true : false}
@@ -184,7 +199,7 @@ const SingleContentPage = () => {
                     <button className='edit' 
                       type="submit" 
                       disabled={parseFloat(singleContent.fundings[0].target_amount) - parseFloat(singleContent.fundings[0].current_amount) <= 0 ? true : false}
-                      onClick={(e, text) => validateForm(e, text)}>
+                      onClick={(e, text) => validateDonationForm(e, text)}>
                         DONATE
                     </button>
                   </div>
@@ -203,7 +218,7 @@ const SingleContentPage = () => {
                 <form onSubmit={createComment} className="form-comment">
                   <textarea className="text-area" placeholder="Comment Here" rows="6" cols="60" value={userInput} onChange={handleCommentChange}/>
                 </form>
-                <button className='submit send' type="submit" onClick={createComment}>SEND</button>
+                <button className='submit send' type="submit" onClick={(e, text) => validateCommentForm(e, text)}>SEND</button>
                 {/* <form> */}
                 {Object.values(comments).length > 0 ?
                   <ul> {comments.map(comm => {

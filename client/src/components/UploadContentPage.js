@@ -30,7 +30,7 @@ const UploadContentPage = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const collection = await axios.get('/api/categories')
+        const collection = await axios.get('/api/categories/')
         const select = { id: 0, name: 'Select', contents: [] }
         collection.data.splice(0, 0, select)
         setCategories(collection.data)
@@ -85,8 +85,6 @@ const UploadContentPage = () => {
   const validateForm = (event) => {
     event.preventDefault()
     setMessage('')
-    console.log('THIS is the data-- ', categories)
-    console.log(uploadImage.length < 1)
     if (contentData.full_name === '') {
       setMessage('Name is required')
     } else

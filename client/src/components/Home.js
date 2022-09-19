@@ -18,8 +18,6 @@ const Home = () => {
   const [ errors, setErrors ] = useState(false)
   const navigate = useNavigate()
   const axios = require('axios')
-  // const rapidapikey = process.env.REACT_APP_RAPID_API_KEY
-  // console.log('-->', env)
 
   const [ newsData, setNewsData ] = useState([])
   useEffect(() => {
@@ -27,7 +25,7 @@ const Home = () => {
     const getData = async () => {
       const options = {
         method: 'GET',
-        url: 'https://climate-change23.p.rapidapi.com/news',
+        url: 'https://climate-change23.p.rapidapi.com/news/',
         headers: {
           'X-RapidAPI-Key': '9b480a6d88mshc6e98bd8981fde1p132c0djsnd99ddaca6b99',
           'X-RapidAPI-Host': 'climate-change23.p.rapidapi.com',
@@ -61,8 +59,8 @@ const Home = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const latest = await axios.get('http://127.0.0.1:8000/api/contents/latest' )
-        const collection = await axios.get('http://127.0.0.1:8000/api/categories')
+        const latest = await axios.get('http://127.0.0.1:8000/api/contents/latest/' )
+        const collection = await axios.get('http://127.0.0.1:8000/api/categories/')
         setContents(latest.data)
         setCategories(collection.data)
         
@@ -86,7 +84,6 @@ const Home = () => {
     return imageTmp.join('/')
   } 
 
-  console.log('apinews-->', newsData )
   return (
     <> 
       <Container as="main" className='content-index'>
