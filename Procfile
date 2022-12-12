@@ -1,2 +1,2 @@
 web: gunicorn project.wsgi:application
-web: npm run start --prefix client/
+web: npm install --prefix client/ && npm run start --prefix client/
