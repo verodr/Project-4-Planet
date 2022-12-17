@@ -1,1 +1,1 @@
-web: gunicorn project.wsgi
+web: npm run build --prefix client/ && gunicorn project.wsgi
