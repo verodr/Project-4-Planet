@@ -160,6 +160,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'project.urls' #check if you have this already, if not add it in
 
+
 STATIC_URL = '/static/' # same with this
 
 STATICFILES_DIRS = (
