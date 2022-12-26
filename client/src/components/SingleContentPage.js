@@ -22,7 +22,7 @@ const SingleContentPage = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await axios.get(`/api/contents/${single}/`)
+        const res = await axios.get(`${BACKEND_URL}/api/contents/${single}/`)
         setSingleContent(res.data)
         setComments(res.data.comments)
       } catch (err) {
@@ -47,7 +47,7 @@ const SingleContentPage = () => {
     const fundingItem = singleContent.fundings[0]
     const body = { ...fundingItem, current_amount: donation }
     try {
-      const res = await axios.put(`/api/fundings/${fundingItem.id}/`, body, {
+      const res = await axios.put(`${BACKEND_URL}/api/fundings/${fundingItem.id}/`, body, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -63,7 +63,7 @@ const SingleContentPage = () => {
   const deleteContent = async (e) => {
     const id = singleContent.id 
     try {
-      const res = await axios.delete(`/api/contents/${id}/`, {
+      const res = await axios.delete(`${BACKEND_URL}/api/contents/${id}/`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -80,7 +80,7 @@ const SingleContentPage = () => {
     const ownerId = localStorage.getItem('userId')
     const body = { content: id , text: userInput, owner: ownerId, owner_name: localStorage.getItem('message') }
     try {
-      const res = await axios.post('/api/comments/', body, {
+      const res = await axios.post(`${BACKEND_URL}/api/comments/`, body, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -95,7 +95,7 @@ const SingleContentPage = () => {
 
   const deleteComment = async (e, commentId) => {
     try {
-      const res = await axios.delete(`/api/comments/${commentId}/`, {
+      const res = await axios.delete(`${BACKEND_URL}/api/comments/${commentId}/`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },

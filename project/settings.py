@@ -33,7 +33,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['planet-earth-is-calling.herokuapp.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://main.djinb38qaq6b1.amplifyapp.com']
 
 
 # Application definition

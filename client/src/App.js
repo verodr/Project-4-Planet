@@ -17,7 +17,7 @@ import NotFound from './components/NotFound'
 const App = () => {
   useEffect(() => {
     const getData = async () => {
-      const { data } = await axios.get('/api/contents/')
+      const { data } = await axios.get(`${BACKEND_URL}/api/contents/`)
     }
     getData()
   })

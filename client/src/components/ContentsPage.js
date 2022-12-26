@@ -14,7 +14,7 @@ const ContentsPage = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get('/api/contents/')
+        const { data } = await axios.get(`${BACKEND_URL}/api/contents/`)
         setContents(data)
       } catch (err) {
         console.log(err)
