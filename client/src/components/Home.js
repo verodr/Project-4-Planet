@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import DropdownButton from 'react-bootstrap/DropdownButton'
 
-const BACKEND_URL = 'https://planet-earth-is-calling.herokuapp.com/'
+const BACKEND_URL = 'https://planet-earth-is-calling.herokuapp.com'
 
 const Home = () => {
   const [ contents, setContents ] = useState([])

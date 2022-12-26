@@ -6,7 +6,7 @@ import { getToken } from '../components/auth'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/esm/Row'
 
-const BACKEND_URL = 'https://planet-earth-is-calling.herokuapp.com/'
+const BACKEND_URL = 'https://planet-earth-is-calling.herokuapp.com'
 
 const UploadContentPage = () => {
   const navigate = useNavigate()
