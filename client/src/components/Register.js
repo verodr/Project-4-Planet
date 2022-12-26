@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 
+const BACKEND_URL = 'https://planet-earth-is-calling.herokuapp.com/'
+
 const Register = () => {
 
   const [ registerData, setRegisterData ] = useState({

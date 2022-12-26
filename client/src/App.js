@@ -14,6 +14,8 @@ import Login from './components/Login'
 import SingleContentPage from './components/SingleContentPage'
 import NotFound from './components/NotFound'
 
+const BACKEND_URL = 'https://planet-earth-is-calling.herokuapp.com/'
+
 const App = () => {
   useEffect(() => {
     const getData = async () => {

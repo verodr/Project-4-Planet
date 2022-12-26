@@ -9,6 +9,8 @@ import { getToken } from '../components/auth'
 import Card from 'react-bootstrap/Card'
 import { Button } from 'bootstrap'
 
+const BACKEND_URL = 'https://planet-earth-is-calling.herokuapp.com/'
+
 const SingleContentPage = () => {
   const { single } = useParams()
   const [ singleContent, setSingleContent] = useState([])

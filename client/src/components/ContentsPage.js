@@ -7,6 +7,8 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 
+const BACKEND_URL = 'https://planet-earth-is-calling.herokuapp.com/'
+
 const ContentsPage = () => {
   const [contents, setContents ] = useState([])
   const [ errors, setErrors ] =  useState(false)
