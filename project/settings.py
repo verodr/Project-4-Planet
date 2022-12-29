@@ -17,6 +17,7 @@ import os
 import cloudinary 
 import cloudinary.uploader 
 import cloudinary.api
+import mimetypes
 
 load_dotenv()
 
@@ -32,6 +33,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+mimetypes.add_type("text/javascript", ".js", True)
 
 ALLOWED_HOSTS = ['*']
 
