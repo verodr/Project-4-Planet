@@ -7,8 +7,6 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 
-const BACKEND_URL = 'https://planet-earth-is-calling.herokuapp.com'
-
 const ContentsPage = () => {
   const [contents, setContents ] = useState([])
   const [ errors, setErrors ] =  useState(false)
@@ -16,7 +14,7 @@ const ContentsPage = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get(`${BACKEND_URL}/api/contents/`)
+        const { data } = await axios.get('api/contents/')
         setContents(data)
       } catch (err) {
         console.log(err)

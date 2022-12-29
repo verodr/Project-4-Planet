@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 
-const BACKEND_URL = 'https://planet-earth-is-calling.herokuapp.com'
-
 const Login = () => {
   
   const [ loginData, setloginData ] = useState({
@@ -26,7 +24,7 @@ const Login = () => {
     e.preventDefault()
   
     try {
-      const res = await axios.post(`${BACKEND_URL}/api/auth/login/`, loginData)
+      const res = await axios.post('api/auth/login/', loginData)
       const { token, id, message } = res.data
       localStorage.setItem('token', token)
       localStorage.setItem('userId', id)

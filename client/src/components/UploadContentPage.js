@@ -6,8 +6,6 @@ import { getToken } from '../components/auth'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/esm/Row'
 
-const BACKEND_URL = 'https://planet-earth-is-calling.herokuapp.com'
-
 const UploadContentPage = () => {
   const navigate = useNavigate()
   const [funding, setFunding] = useState(false)
@@ -31,7 +29,7 @@ const UploadContentPage = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const collection = await axios.get(`${BACKEND_URL}/api/categories/`)
+        const collection = await axios.get('api/categories/')
         const select = { id: 0, name: 'Select', contents: [] }
         collection.data.splice(0, 0, select)
         setCategories(collection.data)
@@ -53,7 +51,7 @@ const UploadContentPage = () => {
       ct.append('owner', localStorage.getItem('userId'))
       ct.append('image', uploadImage[0])
       
-      const { data } = await axios.post(`${BACKEND_URL}/api/contents/`, ct, {
+      const { data } = await axios.post('api/contents/', ct, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -71,7 +69,7 @@ const UploadContentPage = () => {
       const ownerId = localStorage.getItem('userId')
       const fundingBody = { ...fundingDetails, current_amout: 0, content: id , owner: ownerId }
       try {
-        const { dataF } = await axios.post(`${BACKEND_URL}/api/fundings/`, fundingBody, {
+        const { dataF } = await axios.post('api/fundings/', fundingBody, {
           headers: {
             Authorization: `Bearer ${getToken()}`,
           },
