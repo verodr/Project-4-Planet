@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django.contrib.postgres',
+    'django_on_heroku',
     'corsheaders',
     'jwt_auth',
     'contents',
