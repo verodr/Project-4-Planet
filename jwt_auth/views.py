@@ -14,7 +14,8 @@ class RegisterView(APIView):
     def post(self, request):
         user_to_create = UserSerializer(data=request.data)
         try:
-            user_to_create.is_valid(True) # this will pass the request through the validate method in the serializer
+            user_to_create.is_valid()
+            # user_to_create.is_valid(True) # this will pass the request through the validate method in the serializer
             # when is_valid succeeds, it adds the validated_data key to the user_to_create object
             user_to_create.save() # save() then uses validated_data object to create a new user. Once successful, it will add a data key to user_to_create, which we can then send back to the user
             return Response(user_to_create.data, status=status.HTTP_202_ACCEPTED)
