@@ -24,7 +24,7 @@ const Login = () => {
     e.preventDefault()
   
     try {
-      const res = await axios.post('http://127.0.0.1:8000/api/auth/login/', loginData)
+      const res = await axios.post('/api/auth/login/', loginData)
       const { token, id, message } = res.data
       localStorage.setItem('token', token)
       localStorage.setItem('userId', id)
