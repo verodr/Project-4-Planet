@@ -59,8 +59,10 @@ const Home = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const latest = await axios.get('http://127.0.0.1:8000/api/contents/latest/' )
-        const collection = await axios.get('http://127.0.0.1:8000/api/categories/')
+        // const latest = await axios.get('http://127.0.0.1:8000/api/contents/latest/' )
+        // const collection = await axios.get('http://127.0.0.1:8000/api/categories/')
+        const latest = await axios.get('/api/contents/latest/' )
+        const collection = await axios.get('/api/categories/')
         setContents(latest.data)
         setCategories(collection.data)
         
