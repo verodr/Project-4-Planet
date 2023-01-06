@@ -13,6 +13,7 @@ djangorestframework = "*"
 pillow = "*"
 cloudinary = "*"
 pyjwt = "*"
+django-on-heroku = "*"
 python-dotenv = "*"
 django-cors-headers = "*"
 
