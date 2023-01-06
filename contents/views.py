@@ -22,7 +22,8 @@ class ContentListView(APIView):
         request.data['image'] = request.FILES['image']
         content_to_add = ContentSerializer(data=request.data)
         try:
-            content_to_add.is_valid(True)
+            # content_to_add.is_valid(True)
+            content_to_add.is_valid()
             print(content_to_add.validated_data)
             content_to_add.save()
             return Response(content_to_add.data, status=status.HTTP_201_CREATED)
@@ -54,7 +55,8 @@ class ContentDetailView(APIView):
         content_to_update = self.get_content(pk=pk)
         updated_content = ContentSerializer(content_to_update, data=request.data)
         try:
-            updated_content.is_valid(True)
+            updated_content.is_valid()
+            # updated_content.is_valid(True)
             updated_content.save()
             return Response(updated_content.data,status=status.HTTP_202_ACCEPTED)
         except Exception as e:

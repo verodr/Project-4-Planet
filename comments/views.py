@@ -19,7 +19,8 @@ class CommentListView(APIView):
     def post(self, request):
         comment_to_create = CommentSerializer(data = request.data)
         try:
-            comment_to_create.is_valid(True)
+            comment_to_create.is_valid()
+            # comment_to_create.is_valid(True)
             comment_to_create.save()
             return Response(comment_to_create.data, status=status.HTTP_201_CREATED)
         except Exception as e:

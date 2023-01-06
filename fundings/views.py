@@ -14,7 +14,8 @@ class FundingListView(APIView):
     def post(self, request):
         funding_to_create = FundingSerializer(data=request.data)
         try:
-            funding_to_create.is_valid(True)
+            # funding_to_create.is_valid(True)
+            funding_to_create.is_valid()
             funding_to_create.save()
             return Response(funding_to_create.data, status=status.HTTP_201_CREATED)
         except Exception as e:
@@ -40,7 +41,8 @@ class FundingDetailView(APIView):
         request.data['current_amount'] = self.updateAmount(funding_to_update.current_amount, request.data['current_amount'])
         updated_funding = FundingSerializer(funding_to_update, data=request.data)
         try:
-            updated_funding.is_valid(True)
+            updated_funding.is_valid()
+            # updated_funding.is_valid(True)
             updated_funding.save()
             return Response(updated_funding.data,status=status.HTTP_202_ACCEPTED)
         except Exception as e:
